@@ -1,11 +1,9 @@
 import { BaseEntity, Column, Entity, PrimaryGeneratedColumn } from 'typeorm';
 
-
-  @Entity({
-    database: 'app',
-    name: 'vehicle',
+@Entity({
+  database: 'fleetpro',
+  name: 'vehicle',
 })
-
 export class VehicleEntity extends BaseEntity {
   @PrimaryGeneratedColumn('uuid')
   id: string;
@@ -34,17 +32,17 @@ export class VehicleEntity extends BaseEntity {
   @Column()
   vehicleMileage: number;
 
-  @ManyToOne(
-    type => CompanyBranchEntity,
-    companyBranch => companyBranch.vehicles,
-  )
-  assignedToCompanyBranchId: string;
-
-  @ManyToOne(
-    type => DriverEntity,
-    driver => driver.vehicles,
-  )
-  assignedToDriverId: string;
+  // @ManyToOne(
+  //   type => CompanyBranchEntity,
+  //   companyBranch => companyBranch.vehicles,
+  // )
+  // assignedToCompanyBranchId: string;
+  //
+  // @ManyToOne(
+  //   type => DriverEntity,
+  //   driver => driver.vehicles,
+  // )
+  // assignedToDriverId: string;
 
   @Column({ nullable: true })
   photo?: string;
