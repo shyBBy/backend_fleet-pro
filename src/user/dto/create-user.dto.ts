@@ -1,18 +1,24 @@
-export namespace UsersDto {
-  export class UserDTO {
-    id: string;
-    name: string;
-    surname: string;
-    email: string;
-    password: string;
-    role: USER_ROLE | any;
+import {UserEntity} from "../entities/user.entity";
+import {USER_ROLE} from "../../../types/user";
+import {UserCreate} from "../../interfaces/user";
+import {IsEmail, IsNotEmpty, IsString} from "class-validator";
 
-    constructor(userEntity: UserEntity) {
-      this.id = userEntity.id;
-      this.name = userEntity.name;
-      this.surname = userEntity.surname;
-      this.password = userEntity.password;
-      this.role = USER_ROLE;
-    }
-  }
+export class UserCreateDto implements UserCreate {
+
+    @IsEmail()
+    @IsString()
+    @IsNotEmpty()
+    email: string;
+
+    @IsString()
+    @IsNotEmpty()
+    name: string;
+
+    @IsNotEmpty()
+    @IsString()
+    surname: string;
+
+    @IsNotEmpty()
+    password: string;
+
 }
