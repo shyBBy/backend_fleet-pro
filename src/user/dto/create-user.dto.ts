@@ -7,14 +7,20 @@ export class UserCreateDto implements UserCreate {
   @IsNotEmpty()
   email: string;
 
-  @IsString()
-  @IsNotEmpty()
-  name: string;
 
   @IsNotEmpty()
-  @IsString()
-  surname: string;
+  password: string;
+}
 
+
+
+export class UserLoginDto implements UserCreate {
+  
+  @IsEmail()
+  @IsNotEmpty()
+  email: string;
+  
+  
   @IsNotEmpty()
   password: string;
 }

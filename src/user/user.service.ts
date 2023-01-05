@@ -7,8 +7,9 @@ const bcrypt = require('bcrypt');
 
 @Injectable()
 export class UserService {
+  
   async create(createUserDto: UserCreateDto) {
-    const { name, surname, email, password } = createUserDto;
+    const {email, password } = createUserDto;
 
     const checkEmail = await UserEntity.findOneBy({ email });
 
@@ -26,11 +27,8 @@ export class UserService {
     try {
       const user = new UserEntity();
       user.id = uuid();
-      user.name = name;
-      user.surname = surname;
       user.email = email;
       user.password = hash;
-      user.role = USER_ROLE.USER;
       await user.save();
       return {
         message: `Pomyślnie utworzono konto.`,
@@ -46,4 +44,6 @@ export class UserService {
       );
     }
   }
+  
+ 
 }

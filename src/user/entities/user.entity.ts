@@ -32,4 +32,7 @@ export class UserEntity extends BaseEntity {
 
   @Column()
   jobPosition: string;
+  
+  @Column()
+  currentTokenId: string;
 }
