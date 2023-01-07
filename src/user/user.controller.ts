@@ -18,10 +18,5 @@ export class UserController {
   create(@Body() createUserDto: UserCreateDto) {
     return this.userService.create(createUserDto);
   }
-  
-  @Post('login')
-  login(@Body() loginUserDto: UserLoginDto)
-  {
-    return this.userService.login(loginUserDto)
-  }
+
 }

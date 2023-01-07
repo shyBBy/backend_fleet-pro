@@ -35,3 +35,4 @@ lerna-debug.log*
 !.vscode/extensions.json
 
 src/config/config.ts
+src/config/jwt.config.ts

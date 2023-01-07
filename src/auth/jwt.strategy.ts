@@ -1,11 +1,11 @@
 import { Injectable, UnauthorizedException } from '@nestjs/common';
 import { PassportStrategy } from '@nestjs/passport';
-import { Strategy } from 'passport-jwt';
+import {Strategy, VerifiedCallback} from 'passport-jwt';
 import { jwtConfig } from '../config/jwt.config';
-import { UserEntity } from '../user/entities/user.entity';
+import {UserService} from "../user/user.service";
 
 export interface JwtPayload {
-  id: string;
+  email: string;
 }
 
 function cookieExtractor(req: any): null | string {
@@ -14,25 +14,19 @@ function cookieExtractor(req: any): null | string {
 
 @Injectable()
 export class JwtStrategy extends PassportStrategy(Strategy) {
-  constructor() {
+  constructor(private userService: UserService) {
     super({
       jwtFromRequest: cookieExtractor,
       secretOrKey: jwtConfig.secret,
     });
   }
 
-  async validate(payload: JwtPayload, done: (error, user) => void) {
-    if (!payload || !payload.id) {
-      return done(new UnauthorizedException(), false);
-    }
-
-    const user = await UserEntity.findOne({
-      where: { currentTokenId: payload.id },
-    });
+  async validate(payload: JwtPayload, done: VerifiedCallback) {
+    const user = await this.userService.getByEmail(payload.email);
+    console.log('jwt-strategy - validate')
     if (!user) {
       return done(new UnauthorizedException(), false);
     }
-
-    done(null, user);
+    return done(null, user)
   }
 }

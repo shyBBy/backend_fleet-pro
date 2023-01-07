@@ -1,5 +1,5 @@
+import { USER_ROLE } from 'src/interfaces/user';
 import { BaseEntity, Column, Entity, PrimaryGeneratedColumn } from 'typeorm';
-import { USER_ROLE } from 'types/user';
 
 @Entity({
   database: 'fleetpro',
