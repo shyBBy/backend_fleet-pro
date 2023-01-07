@@ -14,16 +14,13 @@ export class AuthController {
 
 
   @Post('login')
-
-  async login(@UserObj() user: UserEntity, @Res() res: Response) {
-    console.log('kontroler')
-    console.log('auth.service - login')
-    return this.authService.login(user, res);
+  async login(@Body() req: AuthLoginDto, @Res() res: Response): Promise<any> {
+    return this.authService.login(req, res);
   }
 
-  @UseGuards(JwtAuthGuard)
-  @Post('logout')
-  async logout(@Res() res: Response) {
-    return this.authService.logout(res);
+  @Get('logout')
+  @UseGuards(AuthGuard('jwt'))
+  async logout(@UserObj() user: UserEntity, @Res() res: Response) {
+    return this.authService.logout(user, res);
   }
 }

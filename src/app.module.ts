@@ -27,7 +27,7 @@ import {VehicleEntity} from "./vehicle/entities/vehicle.entity";
             VehicleEntity,
         ],
         bigNumberStrings: false,
-        logging: true,
+        logging: false,
         synchronize: true,
       }),
     UserModule,

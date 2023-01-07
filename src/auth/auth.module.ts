@@ -4,12 +4,12 @@ import { AuthController } from './auth.controller';
 import {UserModule} from "../user/user.module";
 import { PassportModule } from '@nestjs/passport';
 import {JwtStrategy} from "./jwt.strategy";
-import {LocalStrategy} from "./local.strategy";
+
 
 @Module({
   imports: [forwardRef(() => UserModule), PassportModule],
   controllers: [AuthController],
-  providers: [AuthService, JwtStrategy, LocalStrategy],
-  exports: [AuthService],
+  providers: [AuthService, JwtStrategy],
+  exports: [AuthService, JwtStrategy],
 })
 export class AuthModule {}

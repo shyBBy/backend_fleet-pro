@@ -5,6 +5,7 @@ import { v4 as uuid } from 'uuid';
 import { DataSource } from 'typeorm';
 import {AuthService} from "../auth/auth.service";
 import {LoggedUserRes} from "../interfaces/user";
+import {hashPwd} from "../utils/password.utils";
 const bcrypt = require('bcrypt');
 
 @Injectable()
@@ -13,7 +14,8 @@ export class UserService {
       private dataSource: DataSource,
       @Inject(forwardRef(() => AuthService)) private authService: AuthService,
       ) {}
-  
+
+
   async create(createUserDto: UserCreateDto) {
     const {email, password } = createUserDto;
 
@@ -29,12 +31,11 @@ export class UserService {
       );
     }
 
-    const hash = await bcrypt.hash(password, 10);
     try {
       const user = new UserEntity();
       user.id = uuid();
       user.email = email;
-      user.password = hash;
+      user.password = hashPwd(password);
       await user.save();
       return {
         message: `Pomyślnie utworzono konto.`,

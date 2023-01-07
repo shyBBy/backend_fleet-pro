@@ -3,13 +3,14 @@ import { PassportStrategy } from '@nestjs/passport';
 import {Strategy, VerifiedCallback} from 'passport-jwt';
 import { jwtConfig } from '../config/jwt.config';
 import {UserService} from "../user/user.service";
+import {UserEntity} from "../user/entities/user.entity";
 
 export interface JwtPayload {
-  email: string;
+  id: string;
 }
 
 function cookieExtractor(req: any): null | string {
-  return req && req.cookies ? req.cookies?.jwt ?? null : null;
+  return (req && req.cookies) ? (req.cookies?.jwt ?? null) : null;
 }
 
 @Injectable()
@@ -21,12 +22,14 @@ export class JwtStrategy extends PassportStrategy(Strategy) {
     });
   }
 
-  async validate(payload: JwtPayload, done: VerifiedCallback) {
-    const user = await this.userService.getByEmail(payload.email);
-    console.log('jwt-strategy - validate')
-    if (!user) {
+  async validate(payload: JwtPayload, done: (error, user) => void) {
+    if (!payload || !payload.id) {
       return done(new UnauthorizedException(), false);
     }
-    return done(null, user)
+    const user = await UserEntity.findOneBy({currentTokenId: payload.id});
+    if (!user) {
+      return done(new UnauthorizedException(), false)
+    }
+    done(null, user)
   }
 }

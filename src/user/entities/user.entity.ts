@@ -33,6 +33,9 @@ export class UserEntity extends BaseEntity {
   @Column()
   jobPosition: string;
   
-  @Column()
-  currentTokenId: string;
+  @Column({
+    nullable: true,
+    default: null,
+  })
+  currentTokenId: string | null;
 }
