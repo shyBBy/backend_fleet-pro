@@ -6,7 +6,6 @@ import { DataSource } from 'typeorm';
 import {AuthService} from "../auth/auth.service";
 import {LoggedUserRes} from "../interfaces/user";
 import {hashPwd} from "../utils/password.utils";
-const bcrypt = require('bcrypt');
 
 @Injectable()
 export class UserService {
@@ -55,13 +54,11 @@ export class UserService {
   async getMe(user: UserEntity): Promise<LoggedUserRes> {
     const selectedUser = await this.dataSource
         .createQueryBuilder()
-        .select(['name', 'surname', 'id'])
+        .select('user')
         .from(UserEntity, 'user')
         .where({email: user.email})
         .getOne();
-
-    console.log(selectedUser)
-    console.log(user.email)
+    console.log(`w userService, selectedUser = ${selectedUser} --------- selectedUser.id = ${selectedUser.id} --------- selectedUser[2] = ${selectedUser[2]} --------- `)
     return {
       id: selectedUser.id,
       role: selectedUser.role,

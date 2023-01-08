@@ -21,21 +21,22 @@ export class UserEntity extends BaseEntity {
   @Column()
   password: string;
 
-  @Column()
+  @Column({
+    default: false,
+  })
   isActive: boolean;
 
   @Column()
   avatar: string;
 
-  @Column()
-  role: string | USER_ROLE;
+  @Column({
+    type: 'enum',
+    enum: USER_ROLE,
+  })
+  role: USER_ROLE;
 
   @Column()
   jobPosition: string;
-  
-  @Column({
-    nullable: true,
-    default: null,
-  })
-  currentTokenId: string | null;
+
+
 }
