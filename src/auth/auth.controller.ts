@@ -8,19 +8,20 @@ import { AuthGuard } from '@nestjs/passport';
 import { LocalAuthGuard } from 'src/guards/local-auth.guard';
 import { JwtAuthGuard } from 'src/guards/jwt-auth.guard';
 
-@Controller('auth')
+@Controller('api/auth')
 export class AuthController {
   constructor(private authService: AuthService) {}
 
 
+  @UseGuards(LocalAuthGuard)
   @Post('login')
-  async login(@Body() req: AuthLoginDto, @Res() res: Response): Promise<any> {
-    return this.authService.login(req, res);
+  async login(@UserObj() user: User, @Res() res: Response) {
+    return this.authService.login(user, res);
   }
 
-  @Get('logout')
-  @UseGuards(AuthGuard('jwt'))
-  async logout(@UserObj() user: UserEntity, @Res() res: Response) {
-    return this.authService.logout(user, res);
+  @UseGuards(JwtAuthGuard)
+  @Post('logout')
+  async logout(@Res() res: Response) {
+    return this.authService.logout(res);
   }
 }

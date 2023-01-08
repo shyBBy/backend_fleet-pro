@@ -9,7 +9,7 @@ import {JwtStrategy} from "./jwt.strategy";
 @Module({
   imports: [forwardRef(() => UserModule), PassportModule],
   controllers: [AuthController],
-  providers: [AuthService, JwtStrategy],
-  exports: [AuthService, JwtStrategy],
+  providers: [AuthService, JwtStrategy, LocalStrategy],
+  exports: [AuthService],
 })
 export class AuthModule {}

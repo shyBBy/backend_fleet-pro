@@ -6,7 +6,7 @@ import {UserService} from "../user/user.service";
 import {UserEntity} from "../user/entities/user.entity";
 
 export interface JwtPayload {
-  id: string;
+  email: string;
 }
 
 function cookieExtractor(req: any): null | string {
@@ -18,18 +18,15 @@ export class JwtStrategy extends PassportStrategy(Strategy) {
   constructor(private userService: UserService) {
     super({
       jwtFromRequest: cookieExtractor,
-      secretOrKey: jwtConfig.secret,
+      secretOrKey: config,
     });
   }
 
-  async validate(payload: JwtPayload, done: (error, user) => void) {
-    if (!payload || !payload.id) {
+  async validate(payload: JwtPayload, done: VerifiedCallback) {
+    const user = await this.userService.getByEmail(payload.email);
+    if (!user) {
       return done(new UnauthorizedException(), false);
     }
-    const user = await UserEntity.findOneBy({currentTokenId: payload.id});
-    if (!user) {
-      return done(new UnauthorizedException(), false)
-    }
-    done(null, user)
+    return done(null, user);
   }
 }
