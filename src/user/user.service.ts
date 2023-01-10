@@ -73,5 +73,26 @@ export class UserService {
     return await UserEntity.findOneBy({email})
   }
   
+  
+  
+  
+  
+  async userProfileUpdate(user: UserEntity, userProfileUpdateDto: UserProfileDto){
+    
+    const user = await this.dataSource.createQueryBuilder().select('user.id'). from(UserEntity, 'user').where('user.id = :id', {id: user.id}).getOne()
+    
+    if (!user){
+      throw new BadRequestException('Użytkownik nie istnieje.');
+    }
+    
+    try {
+      
+      const {} = userProfileUpdateDto;
+      
+    } catch(e) {
+      
+    }
+  }
+  
  
 }
