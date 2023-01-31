@@ -7,6 +7,8 @@ import {AuthService} from "../auth/auth.service";
 import {LoggedUserRes} from "../interfaces/user";
 import {hashPwd} from "../utils/password.utils";
 
+import {createResponse} from '../utils/createResponse'
+
 @Injectable()
 export class UserService {
   constructor(
