@@ -8,11 +8,9 @@ export class VehicleController {
 
 
 
-  @Get('test')
+  @Post('create')
   @UseGuards(JwtAuthGuard)
-  check() {
-    return {
-      message: 'Zalogowany'
-    }
+  create(@Body() createVehicleDto: VehicleCreateDto) {
+    return this.vehicleService.create(createVehicleDto);
   }
 }
