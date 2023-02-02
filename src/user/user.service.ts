@@ -7,6 +7,8 @@ import {AuthService} from "../auth/auth.service";
 import {LoggedUserRes} from "../interfaces/user";
 import {hashPwd} from "../utils/password.utils";
 
+import {createResponse} from '../utils/createResponse'
+
 @Injectable()
 export class UserService {
   constructor(
@@ -36,10 +38,7 @@ export class UserService {
       user.email = email;
       user.password = hashPwd(password);
       await user.save();
-      return {
-        message: `Pomyślnie utworzono konto.`,
-        isSuccess: true,
-      };
+      return createResponse(true, 'Pomyślnie utworzono konto', 200);
     } catch (e) {
       throw new HttpException(
         {
@@ -58,7 +57,6 @@ export class UserService {
         .from(UserEntity, 'user')
         .where({email: user.email})
         .getOne();
-    console.log(`w userService, selectedUser = ${selectedUser} --------- selectedUser.id = ${selectedUser.id} --------- selectedUser[2] = ${selectedUser[2]} --------- `)
     return {
       id: selectedUser.id,
       role: selectedUser.role,
