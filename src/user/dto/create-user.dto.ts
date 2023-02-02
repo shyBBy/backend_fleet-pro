@@ -1,4 +1,4 @@
-import { UserCreate } from '../../interfaces/user';
+import {USER_ROLE, UserCreate} from '../../interfaces/user';
 import { IsEmail, IsNotEmpty, IsString, IsOptional} from 'class-validator';
 
 export class UserCreateDto implements UserCreate {

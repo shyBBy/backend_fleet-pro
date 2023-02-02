@@ -1,5 +1,5 @@
-import {forwardRef, HttpException, HttpStatus, Inject, Injectable} from '@nestjs/common';
-import { UserCreateDto } from './dto/create-user.dto';
+import {BadRequestException, forwardRef, HttpException, HttpStatus, Inject, Injectable} from '@nestjs/common';
+import {UserCreateDto, UserProfileDto} from './dto/create-user.dto';
 import { UserEntity } from './entities/user.entity';
 import { v4 as uuid } from 'uuid';
 import { DataSource } from 'typeorm';
@@ -70,22 +70,57 @@ export class UserService {
   async getByEmail(email: string): Promise<UserEntity | null> {
     return await UserEntity.findOneBy({email})
   }
-  
-  
-  async getUserProfile(userId: string, loggedUser: UserEntity): Promise<UserEntity | null> {
-    
-    if (userId === loggedUser.id) {
-      return await UserEntity.findOneBy({loggedUser.id})
+
+
+
+  public async getById(id: string | UserEntity): Promise<any> {
+
+    try {
+      await this.dataSource
+          .createQueryBuilder()
+          .select('user.id')
+          .from(UserEntity, 'user')
+          .where({id: id})
+          .getOneOrFail()
+
+      return true
+
+    } catch (e) {
+
+      return false
     }
-    
-    return await UserEntity.findOneBy({userId})
-    
+  }
+
+
+
+  async getUserProfile(userId: string, loggedUser: UserEntity): Promise<UserEntity | any> {
+
+    if (!await this.getById(userId) || await this.getById(loggedUser)) {
+      throw new HttpException(
+          {
+            message: `Nie ma użytkownika o podanym ID`,
+            isSuccess: false,
+          },
+          HttpStatus.NOT_FOUND,
+      );
+    }
+
+    if (userId === loggedUser.id) {
+      return loggedUser
+    }
+
+
   }
   
   
   async userProfileUpdate(user: UserEntity, userProfileUpdateDto: UserProfileDto){
     
-    const user = await this.dataSource.createQueryBuilder().select('user.id'). from(UserEntity, 'user').where('user.id = :id', {id: user.id}).getOne()
+    const userRes = await this.dataSource
+        .createQueryBuilder()
+        .select('user.id')
+        .from(UserEntity, 'user')
+        .where('user.id = :id', {id: user.id})
+        .getOne()
     
     if (!user){
       throw new BadRequestException('Użytkownik nie istnieje.');

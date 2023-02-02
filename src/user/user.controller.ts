@@ -5,10 +5,10 @@ import {
   Body,
   Patch,
   Param,
-  Delete, UseGuards,
+  Delete, UseGuards, Put,
 } from '@nestjs/common';
 import { UserService } from './user.service';
-import { UserCreateDto, UserLoginDto} from './dto/create-user.dto';
+import {UserCreateDto, UserLoginDto, UserProfileDto} from './dto/create-user.dto';
 import {JwtAuthGuard} from "../guards/jwt-auth.guard";
 import {UserObj} from "../decorators/user-object.decorator";
 import {UserEntity} from "./entities/user.entity";
