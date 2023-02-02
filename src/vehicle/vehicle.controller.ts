@@ -20,6 +20,13 @@ export class VehicleController {
     return this.vehicleService.getOneById(id)
   }
   
+  
+  @Get('remove/:id')
+  @UseGuards(JwtAuthGuard)
+  remove(@Param('id') id: number) {
+    return this.vehicleService.removeOneById(id)
+  }
+  
   @Get('/list')
   @UseGuards(JwtAuthGuard)
   getAll(

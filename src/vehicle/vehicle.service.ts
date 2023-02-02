@@ -139,6 +139,7 @@ async create(vehicleCreateDto: VehicleCreateDto) {
    try{
      
      await vehicle.remove()
+     return createResponse(true, 'Pomyślnie usunięto pojazd', 200);
      
    } catch(e) {
      console.log(e)
