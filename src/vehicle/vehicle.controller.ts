@@ -8,7 +8,7 @@ export class VehicleController {
 
 
 
-  @Post('create')
+  @Post('/create')
   @UseGuards(JwtAuthGuard)
   create(@Body() createVehicleDto: VehicleCreateDto) {
     return this.vehicleService.create(createVehicleDto);
