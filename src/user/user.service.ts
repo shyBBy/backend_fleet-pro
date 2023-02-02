@@ -74,7 +74,15 @@ export class UserService {
   }
   
   
-  
+  async getUserProfile(userId: string, loggedUser: UserEntity): Promise<UserEntity | null> {
+    
+    if (userId === loggedUser.id) {
+      return await UserEntity.findOneBy({loggedUser.id})
+    }
+    
+    return await UserEntity.findOneBy({userId})
+    
+  }
   
   
   async userProfileUpdate(user: UserEntity, userProfileUpdateDto: UserProfileDto){

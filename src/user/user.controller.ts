@@ -34,6 +34,17 @@ export class UserController {
       userProfileUpdateDto,
     );
   }
+  
+  
+  @Get('profile/:userId')
+  @UseGuards(JwtAuthGuard)
+  userProfile(
+    @Param('userId') userId: string,
+    @UserObj() user: UserEntity,
+    ) {
+      return this.userService.getUserProfile(userId, user)
+    }
+
 
   @Post('create')
   create(@Body() createUserDto: UserCreateDto) {
