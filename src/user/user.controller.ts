@@ -22,6 +22,18 @@ export class UserController {
   getMe(@UserObj() user: UserEntity) {
     return this.userService.getMe(user);
   }
+  
+  @Put('/')
+  @UseGuards(JwtAuthGuard)
+  userProfileUpdate(
+    @UserObj() user: UserEntity,
+    @Body() userProfileUpdateDto: UserProfileDto,
+  ) {
+    return this.userService.userProfileUpdate(
+      user,
+      userProfileUpdateDto,
+    );
+  }
 
   @Post('create')
   create(@Body() createUserDto: UserCreateDto) {
