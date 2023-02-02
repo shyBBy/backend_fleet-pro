@@ -49,7 +49,108 @@ async create(vehicleCreateDto: VehicleCreateDto) {
 }
   
   
+ public async getOneById(id: number): Promise<VehicleEntity | null> {
+   return await VehicleEntity.findOneBy({id})
+ }
+  
+ 
+ async getAllPaginatedVehs(
+    page = 1,
+    maxOnPage: number,
+    sort: string,
+    order: 'ASC' | 'DESC',
+    name: string,
+    model: string,
+    yearOfProduction: string,
+    isCurrentVehicleInspection: boolean,
+    vehicleType: string,
+  ): Promise<GetPaginatedListOfAllVehsResponse> {
+    //@TODO: zmienić typ w powyższym promise
+
+    const filterValues = {
+      name,
+      model,
+      yearOfProduction,
+      isCurrentVehicleInspection,
+      vehicleType,
+    };
+
+    // na sztywno ustawiona maksymalna ilość wyświetlanych wyników
+    maxOnPage = 10;
+    const filteredValues = {};
+    Object.entries(filterValues)
+      .filter((entry) => {
+        if (entry[1] !== 0 && typeof entry[1] !== 'undefined' && !Number.isNaN(entry[1])) return true;
+        return entry[1];
+      })
+      .forEach((e) => {
+        return (filteredValues[e[0]] = e[1]);
+      });
+
+    if (typeof sort === 'undefined') {
+      console.log(filteredValues);
+      try {
+        const [vehs, totalEntitiesCount] = await VehicleEntity.findAndCount({
+          where: filteredValues,
+          skip: maxOnPage * (page - 1),
+          take: maxOnPage,
+        });
+        const pagesCount = Math.ceil(totalEntitiesCount / maxOnPage);
+        //@TODO: sprawdzić tego ifa.
+        if (!vehs.length) {
+          return {
+            vehs: [],
+            pagesCount: 0,
+            resultsCount: 0,
+          };
+        }
+        return {
+          vehs,
+          pagesCount,
+          resultsCount: totalEntitiesCount,
+        };
+      } catch (e) {
+        console.log(e);
+        throw new HttpException(
+          {
+            message: `Cos poszlo nie tak, spróbuj raz jeszcze.`,
+            isSuccess: false,
+          },
+          HttpStatus.BAD_REQUEST,
+        );
+      }
+    }
+  }
   
   
-  
+ async removeOneById(id: number) {
+   const vehicle = await VehicleEntity.findOneBy({id})
+   
+   if (!vehicle) {
+     throw new HttpException(
+          {
+            message: `Pojazd o podanym ID nie znajduje się w bazie danych - nie da się go usunąć.`,
+            isSuccess: false,
+          },
+          HttpStatus.NOT_FOUND,
+        );
+   }
+   
+   try{
+     
+     await vehicle.remove()
+     
+   } catch(e) {
+     console.log(e)
+      throw new HttpException(
+          {
+            message: `Cos poszlo nie tak`,
+            isSuccess: false,
+          },
+          HttpStatus.NOT_FOUND,
+        );
+   }
+   
+   
+ }
 }
