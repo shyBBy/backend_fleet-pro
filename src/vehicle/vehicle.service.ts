@@ -56,7 +56,7 @@ async create(vehicleCreateDto: VehicleCreateDto) {
  
  async getAllPaginatedVehs(
     page = 1,
-    maxOnPage: number,
+    maxOnPage: number = 10,
     sort: string,
     order: 'ASC' | 'DESC',
     name: string,
@@ -65,8 +65,6 @@ async create(vehicleCreateDto: VehicleCreateDto) {
     isCurrentVehicleInspection: boolean,
     vehicleType: string,
   ): Promise<GetPaginatedListOfAllVehsResponse> {
-    //@TODO: zmienić typ w powyższym promise
-
     const filterValues = {
       name,
       model,
@@ -75,8 +73,6 @@ async create(vehicleCreateDto: VehicleCreateDto) {
       vehicleType,
     };
 
-    // na sztywno ustawiona maksymalna ilość wyświetlanych wyników
-    maxOnPage = 10;
     const filteredValues = {};
     Object.entries(filterValues)
       .filter((entry) => {
@@ -96,7 +92,6 @@ async create(vehicleCreateDto: VehicleCreateDto) {
           take: maxOnPage,
         });
         const pagesCount = Math.ceil(totalEntitiesCount / maxOnPage);
-        //@TODO: sprawdzić tego ifa.
         if (!vehs.length) {
           return {
             vehs: [],
@@ -139,7 +134,7 @@ async create(vehicleCreateDto: VehicleCreateDto) {
    try{
      
      await vehicle.remove()
-     return createResponse(true, 'Pomyślnie usunięto pojazd', 200);
+     return createResponse(true, `Pomyślnie usunięto pojazd o nr rejestracyjnym: ${vehicle.registerNumber}`, 200);
      
    } catch(e) {
      console.log(e)
