@@ -149,4 +149,35 @@ async create(vehicleCreateDto: VehicleCreateDto) {
    
    
  }
+ 
+ 
+ 
+ 
+ async addVehicleToPlace(addVehToPlace: AddVehToPlaceDto, user: UserEntity) {
+  
+  const {placeId, vehicleId} = addVehToPlace
+  
+  const place = await PlaceEntity.findOneBy({placeId})
+  const vehicle = await Vehicle.Entity.findOneBy({vehicleId})
+  
+  if (!place || !vehicle) {
+    throw new HttpException(
+      {
+        message: `W bazie danych nie ma takiego oddziału lub pojazdu.`,
+        isSuccess: false,
+      },
+      HttpStatus.CONFLICT,
+    );
+  }
+  
+  
+  
+  place.assignedVehicles = vehicle
+  place.save()
+  
+  
+ }
+ 
+ 
+ 
 }
