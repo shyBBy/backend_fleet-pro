@@ -1,23 +1,21 @@
-import { VehicleCreate } from '../../interfaces/vehicle';
-import { IsEmail, IsNotEmpty, IsString, IsOptional} from 'class-validator';
+import { IsNotEmpty, IsOptional } from 'class-validator';
 
 export class VehicleCreateDto {
-  
   @IsNotEmpty()
   vehicleType: string;
 
   @IsNotEmpty()
   name: string;
-  
+
   @IsNotEmpty()
   model: string;
-  
+
   @IsNotEmpty()
   registerNumber: string;
-   
+
   @IsNotEmpty()
   isCurrentVehicleInspection: boolean;
-  
+
   @IsNotEmpty()
   lastDateOfVehicleInspection: Date;
 
@@ -26,7 +24,7 @@ export class VehicleCreateDto {
 
   @IsNotEmpty()
   vehicleMileage: number;
-  
+
   @IsOptional()
   photo: string;
 

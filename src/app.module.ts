@@ -9,27 +9,24 @@ import { AuthModule } from './auth/auth.module';
 import { DriverModule } from './driver/driver.module';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { ConfigModule } from '@nestjs/config';
-import {config} from "./config/config";
-import {UserEntity} from "./user/entities/user.entity";
-import {VehicleEntity} from "./vehicle/entities/vehicle.entity";
+import { config } from './config/config';
+import { UserEntity } from './user/entities/user.entity';
+import { VehicleEntity } from './vehicle/entities/vehicle.entity';
 
 @Module({
   imports: [
-      ConfigModule.forRoot(),
-      TypeOrmModule.forRoot({
-        type: 'mysql',
-        host: config.dbHost,
-        username: config.dbUsername,
-        password: config.dbPassword,
-        database: config.dbDatabase,
-        entities: [
-            UserEntity,
-            VehicleEntity,
-        ],
-        bigNumberStrings: false,
-        logging: false,
-        synchronize: true,
-      }),
+    ConfigModule.forRoot(),
+    TypeOrmModule.forRoot({
+      type: 'mysql',
+      host: config.dbHost,
+      username: config.dbUsername,
+      password: config.dbPassword,
+      database: config.dbDatabase,
+      entities: [UserEntity, VehicleEntity],
+      bigNumberStrings: false,
+      logging: false,
+      synchronize: true,
+    }),
     UserModule,
     VehicleModule,
     AuthModule,

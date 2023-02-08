@@ -10,10 +10,9 @@ import { UserEntity } from '../user/entities/user.entity';
 import { sign } from 'jsonwebtoken';
 import { config } from '../config/config';
 import { jwtConfig } from '../config/jwt.config';
-import {UserService} from "../user/user.service";
-import {stringToBoolean} from "../utils/string-to-boolean";
-import {hashPwd} from "../utils/password.utils";
-
+import { UserService } from '../user/user.service';
+import { stringToBoolean } from '../utils/string-to-boolean';
+import { hashPwd } from '../utils/password.utils';
 
 @Injectable()
 export class AuthService {

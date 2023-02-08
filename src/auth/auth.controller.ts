@@ -10,7 +10,6 @@ import { JwtAuthGuard } from 'src/guards/jwt-auth.guard';
 export class AuthController {
   constructor(private authService: AuthService) {}
 
-
   @UseGuards(LocalAuthGuard)
   @Post('login')
   async login(@UserObj() user: UserEntity, @Res() res: Response) {

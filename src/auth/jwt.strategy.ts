@@ -1,16 +1,16 @@
 import { Injectable, UnauthorizedException } from '@nestjs/common';
 import { PassportStrategy } from '@nestjs/passport';
-import {Strategy, VerifiedCallback} from 'passport-jwt';
+import { Strategy, VerifiedCallback } from 'passport-jwt';
 import { jwtConfig } from '../config/jwt.config';
-import {UserService} from "../user/user.service";
-import {UserEntity} from "../user/entities/user.entity";
+import { UserService } from '../user/user.service';
+import { UserEntity } from '../user/entities/user.entity';
 
 export interface JwtPayload {
   email: string;
 }
 
 function cookieExtractor(req: any): null | string {
-  return (req && req.cookies) ? (req.cookies?.jwt ?? null) : null;
+  return req && req.cookies ? req.cookies?.jwt ?? null : null;
 }
 
 @Injectable()

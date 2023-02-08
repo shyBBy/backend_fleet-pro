@@ -5,13 +5,19 @@ import {
   Body,
   Patch,
   Param,
-  Delete, UseGuards,
+  Delete,
+  UseGuards,
+  Put,
 } from '@nestjs/common';
 import { UserService } from './user.service';
-import { UserCreateDto, UserLoginDto} from './dto/create-user.dto';
-import {JwtAuthGuard} from "../guards/jwt-auth.guard";
-import {UserObj} from "../decorators/user-object.decorator";
-import {UserEntity} from "./entities/user.entity";
+import {
+  UserCreateDto,
+  UserLoginDto,
+  UserProfileDto,
+} from './dto/create-user.dto';
+import { JwtAuthGuard } from '../guards/jwt-auth.guard';
+import { UserObj } from '../decorators/user-object.decorator';
+import { UserEntity } from './entities/user.entity';
 
 @Controller('user')
 export class UserController {
@@ -22,33 +28,24 @@ export class UserController {
   getMe(@UserObj() user: UserEntity) {
     return this.userService.getMe(user);
   }
-  
+
   @Put('/')
   @UseGuards(JwtAuthGuard)
   userProfileUpdate(
     @UserObj() user: UserEntity,
     @Body() userProfileUpdateDto: UserProfileDto,
   ) {
-    return this.userService.userProfileUpdate(
-      user,
-      userProfileUpdateDto,
-    );
+    return this.userService.userProfileUpdate(user, userProfileUpdateDto);
   }
-  
-  
+
   @Get('profile/:userId')
   @UseGuards(JwtAuthGuard)
-  userProfile(
-    @Param('userId') userId: string,
-    @UserObj() user: UserEntity,
-    ) {
-      return this.userService.getUserProfile(userId, user)
-    }
-
+  userProfile(@Param('userId') userId: string, @UserObj() user: UserEntity) {
+    return this.userService.getUserProfile(userId, user);
+  }
 
   @Post('create')
   create(@Body() createUserDto: UserCreateDto) {
     return this.userService.create(createUserDto);
   }
-
 }
