@@ -153,9 +153,9 @@ async create(vehicleCreateDto: VehicleCreateDto) {
  
  
  
- async addVehicleToPlace(addVehToPlace: AddVehToPlaceDto, user: UserEntity) {
+ async addVehicleToPlace(addVehToPlace: AddVehToPlaceDto, user: UserEntity, vehicleId: number) {
   
-  const {placeId, vehicleId} = addVehToPlace
+  const {placeId} = addVehToPlace
   
   const place = await PlaceEntity.findOneBy({placeId})
   const vehicle = await Vehicle.Entity.findOneBy({vehicleId})
@@ -174,6 +174,7 @@ async create(vehicleCreateDto: VehicleCreateDto) {
   
   place.assignedVehicles = vehicle
   place.save()
+  return createResponse(true, `Pomyslnie dodano pojazd o numerach rejestracyjnych:  ${vehicle.registerNumber} do oddziału: ${place.name}`, 200)
   
   
  }

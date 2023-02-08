@@ -54,5 +54,10 @@ export class VehicleController {
   }
   
   
+    @Post('/:id/addtoplace')
+  @UseGuards(JwtAuthGuard)
+  addVehicleToPlace(@Body() addVehToPlace: AddVehToPlaceDto, @UserObj() user: UserEntity, @Param('id') vehId: number) {
+    return this.placeService.addVehicleToPlace(addVehicleToPlace, user, vehId)
+  }
   
 }
