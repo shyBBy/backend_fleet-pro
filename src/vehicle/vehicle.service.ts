@@ -53,7 +53,7 @@ export class VehicleService {
     vehicle.yearOfProduction = yearOfProduction;
     vehicle.firstRegistrationDate = firstRegistrationDate;
     vehicle.policyNumber = policyNumber;
-
+    console.log(vehicleCreateDto)
     await vehicle.save();
     return createResponse(true, 'Pomyślnie dodano pojazd do bazy danych', 200);
   }

@@ -1,5 +1,45 @@
 import {FilterRecords} from "../filter";
 
+export enum VEHICLE_BRAND {
+    Mercedes = 'Mercedes',
+    Renault = 'Renault',
+    Opel = 'Opel',
+    Nissan = 'Nissan',
+    Mazda = 'Mazda',
+    Porsche = 'Porsche',
+    Kia = 'Kia',
+    Volkswagen = 'Volkswagen',
+    Ford = 'Ford',
+    Inne = 'Inne'
+}
+
+export enum VEHICLE_MODEL {
+    Sprinter = 'Sprinter',
+    Master = 'Master',
+    Ceed = 'Ceed',
+    Insignia = 'Insignia',
+    Golf = 'Golf',
+    Koleos = 'Koleos',
+    Optima = 'Optima',
+    Cayenne = 'Cayenne',
+    Inne = 'Inne'
+}
+
+export enum VEHICLE_TYPE {
+    Osobowy = 'Osobowy',
+    Dostawczy = 'Dostawczy',
+    Inny = 'Inny'
+}
+
+export interface VehicleUpdateInterface {
+    id: string;
+    vehicleId: string;
+    modifyByUserId: string;
+    lastModifyDate: string;
+    title: string;
+    reason?: string;
+}
+
 export interface VehicleProfileCreate {
     vehicleType: string;
     name: string;

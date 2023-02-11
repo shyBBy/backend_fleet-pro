@@ -23,10 +23,14 @@ export class VehicleEntity extends BaseEntity {
   @Column()
   isCurrentVehicleInspection: boolean;
 
-  @Column()
+  @Column({
+    nullable: true,
+  })
   lastDateOfVehicleInspection: Date;
 
-  @Column()
+  @Column({
+    nullable: true,
+  })
   nextDateOfVehicleInspection: Date;
 
   @Column()
