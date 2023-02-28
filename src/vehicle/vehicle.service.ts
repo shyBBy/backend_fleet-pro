@@ -120,7 +120,7 @@ export class VehicleService {
       try {
         const [vehicles, totalEntitiesCount] = await VehicleEntity.findAndCount(
           {
-            where: filteredValues,
+            where: { ...filteredValues, ...searchValues },
             skip: maxOnPage * (page - 1),
             take: maxOnPage,
           },

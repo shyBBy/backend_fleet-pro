@@ -49,6 +49,8 @@ export class VehicleController {
     @Query('searchType') searchType: string,
     @Query('searchValue') searchValue: string,
   ): Promise<GetPaginatedListOfAllVehiclesResponse> {
+    console.log(`W CONTROLLER TYPE: ${searchType}`)
+    console.log(`W CONTROLLER VALUE: ${searchValue}`)
     return this.vehicleService.getAllPaginatedVehs(
         Number(page),
         sort,
