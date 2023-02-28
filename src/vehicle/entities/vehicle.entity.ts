@@ -20,16 +20,20 @@ export class VehicleEntity extends BaseEntity {
   @Column()
   registerNumber: string;
 
-  @Column()
+  @Column({
+    name: 'isCurrentVehicleInspection',
+  })
   isCurrentVehicleInspection: boolean;
 
   @Column({
-    nullable: true,
+    type: 'datetime',
+    default: null,
   })
   lastDateOfVehicleInspection: Date;
 
   @Column({
-    nullable: true,
+    type: 'datetime',
+    default: null,
   })
   nextDateOfVehicleInspection: Date;
 
@@ -49,7 +53,7 @@ export class VehicleEntity extends BaseEntity {
   // assignedToDriverId: string;
 
   @Column({ nullable: true })
-  photo?: string;
+  photo: string;
 
   @Column()
   vinNumber: string;

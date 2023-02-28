@@ -27,11 +27,6 @@ export class VehicleController {
     return this.vehicleService.create(createVehicleDto);
   }
 
-  @Get('/:id')
-  @UseGuards(JwtAuthGuard)
-  getOneById(@Param('id') id: string) {
-    return this.vehicleService.getOneById(id);
-  }
 
   @Get('remove/:id')
   @UseGuards(JwtAuthGuard)
@@ -43,7 +38,6 @@ export class VehicleController {
   @UseGuards(JwtAuthGuard)
   getAll(
     @Query('page') page: string,
-    @Query('count') count: string,
     @Query('sort') sort: string,
     @Query('order') order: 'ASC' | 'DESC',
     @Query('name') name: string,
@@ -51,18 +45,29 @@ export class VehicleController {
     @Query('yearOfProduction') yearOfProduction: string,
     @Query('isCurrentVehicleInspection') isCurrentVehicleInspection: boolean,
     @Query('vehicleType') vehicleType: string,
+    @Query('vehicleMileage') vehicleMileage: string,
+    @Query('searchType') searchType: string,
+    @Query('searchValue') searchValue: string,
   ): Promise<GetPaginatedListOfAllVehiclesResponse> {
     return this.vehicleService.getAllPaginatedVehs(
-      Number(page),
-      Number(count),
-      sort,
-      order,
-      name,
-      model,
-      yearOfProduction,
-      Boolean(isCurrentVehicleInspection),
-      vehicleType,
+        Number(page),
+        sort,
+        order,
+        name,
+        model,
+        yearOfProduction,
+        Boolean(isCurrentVehicleInspection),
+        vehicleType,
+        Number(vehicleMileage),
+        searchType,
+        searchValue,
     );
+  }
+
+  @Get('/:id')
+  @UseGuards(JwtAuthGuard)
+  getOneById(@Param('id') id: string) {
+    return this.vehicleService.getOneById(id);
   }
 
   // @Post('/:id/addtoplace')

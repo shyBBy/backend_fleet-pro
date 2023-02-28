@@ -1,6 +1,6 @@
 import {HttpException, HttpStatus,Injectable} from '@nestjs/common';
 import {createResponse} from '../utils/createResponse'
-import { DataSource } from 'typeorm';
+import { DataSource, Like } from 'typeorm';
 import {VehicleCreateDto} from "./dto/create-vehicle.dto";
 import {VehicleEntity} from "./entities/vehicle.entity";
 import {GetPaginatedListOfAllVehiclesResponse} from "../../types/vehicle";
@@ -53,7 +53,6 @@ export class VehicleService {
     vehicle.yearOfProduction = yearOfProduction;
     vehicle.firstRegistrationDate = firstRegistrationDate;
     vehicle.policyNumber = policyNumber;
-    console.log(vehicleCreateDto)
     await vehicle.save();
     return createResponse(true, 'Pomyślnie dodano pojazd do bazy danych', 200);
   }
@@ -64,7 +63,6 @@ export class VehicleService {
 
   async getAllPaginatedVehs(
     page = 1,
-    maxOnPage: number = 10,
     sort: string,
     order: 'ASC' | 'DESC',
     name: string,
@@ -72,6 +70,9 @@ export class VehicleService {
     yearOfProduction: string,
     isCurrentVehicleInspection: boolean,
     vehicleType: string,
+    vehicleMileage: number,
+    searchType: string,
+    searchValue: string,
   ): Promise<GetPaginatedListOfAllVehiclesResponse> {
     const filterValues = {
       name,
@@ -79,38 +80,43 @@ export class VehicleService {
       yearOfProduction,
       isCurrentVehicleInspection,
       vehicleType,
+      vehicleMileage,
     };
-
+    
+    const maxOnPage = 10;
     const filteredValues = {};
-    // Object.entries(filterValues)
-    //   .filter((entry) => {
-    //     if (entry[1] !== 0 && typeof entry[1] !== 'undefined' && !Number.isNaN(entry[1])
-    //     )
-    //       return true;
-    //     return entry[1];
-    //   })
-    //   .forEach((e) => {
-    //     return (filteredValues[e[0]] = e[1]);
-    //   });
     Object.entries(filterValues)
-        .filter((entry) => {
-          if (typeof entry[1] === 'string' || typeof entry[1] === 'boolean') {
-            return entry[1];
-          } else if (
-              entry[1] !== 0 &&
-              typeof entry[1] !== 'undefined' &&
-              !Number.isNaN(entry[1])
-          ) {
-            return true;
-          }
-          return false;
-        })
-        .forEach((e) => {
-          return (filteredValues[e[0]] = e[1]);
-        });
-
+      .filter((entry) => {
+        if (entry[1] !== 0 && typeof entry[1] !== 'undefined' && !Number.isNaN(entry[1])
+        )
+          return true;
+        return entry[1];
+      })
+      .forEach((e) => {
+        return (filteredValues[e[0]] = e[1]);
+      });
     if (typeof sort === 'undefined') {
-      console.log(filteredValues);
+
+      let searchValues = {}
+
+      switch (true) {
+        case !searchType && !searchValue:
+          searchValues = {};
+          break
+        case searchType === 'registerNumber':
+          searchValues = { registerNumber: Like(`%${searchValue}%`) };
+          break
+        case searchType === 'vinNumber':
+          searchValues = { vinNumber: Like(`%${searchValue}%`) };
+          break
+        //@TODO: odkomentowac jak zrobi się system oddziałów
+        // case searchType === 'placeName':
+        //   searchValues = { placeName: Like(`%${searchValue}%`) };
+        //   break
+        default:
+          searchValues = { name: Like(`%${searchValue}%`) };
+      }
+
       try {
         const [vehicles, totalEntitiesCount] = await VehicleEntity.findAndCount(
           {
