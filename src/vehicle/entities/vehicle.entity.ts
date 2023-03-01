@@ -66,4 +66,10 @@ export class VehicleEntity extends BaseEntity {
 
   @Column()
   policyNumber: string;
+  
+  @Column()
+  editedByUserId: string;
+  
+  @Column({ type: 'timestamp', default: () => 'CURRENT_TIMESTAMP', onUpdate: 'CURRENT_TIMESTAMP' })
+  updateDate: Date;
 }

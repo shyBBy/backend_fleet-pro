@@ -182,6 +182,29 @@ export class VehicleService {
       );
     }
   }
+  
+  
+  async updateVehicleData(vehicleUpdateDto: VehicleUpdateDto, userId: string, vehicleId: string) {
+    
+    const updatedData = { 
+      ...vehicleUpdateDto,
+      editedByUserId: userId,
+    }
+    
+    try {
+      await VehicleEntity.update(vehicleId, {
+      updatedData
+    })
+    } catch(e) {
+      console.log(e)
+    }
+    
+   
+    return createResponse(true, 'Pomyślnie zaaktualizowano dane pojazdu', 200);
+    
+  
+    
+  }
 
   // async addVehicleToPlace(addVehToPlace: AddVehToPlaceDto, user: UserEntity, vehicleId: string) {
   //

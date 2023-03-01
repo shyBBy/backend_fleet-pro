@@ -65,12 +65,29 @@ export class VehicleController {
         searchValue,
     );
   }
+  
+  @Post('/update/:id')
+  @UseGuards(JwtAuthGuard)
+  updateVehicleData(
+    @Param('id') vehicleId: string, 
+    @Body() updateVehicleDto: VehicleUpdateDto, 
+    @UserObj() user: UserEntity,
+    ) {
+      return this.vehicleService.updateVehicleData(updateVehicleDto, user.id, vehicleId)
+    }
+  
+  
+  
+  
 
   @Get('/:id')
   @UseGuards(JwtAuthGuard)
   getOneById(@Param('id') id: string) {
     return this.vehicleService.getOneById(id);
   }
+  
+  
+ 
 
   // @Post('/:id/addtoplace')
   // @UseGuards(JwtAuthGuard)
