@@ -23,15 +23,15 @@ export class VehicleController {
 
   @Post('/create')
   @UseGuards(JwtAuthGuard)
-  create(@Body() createVehicleDto: VehicleCreateDto) {
-    return this.vehicleService.create(createVehicleDto);
+  create(@Body() createVehicleDto: VehicleCreateDto, @UserObj() user: UserEntity) {
+    return this.vehicleService.create(createVehicleDto, user.id);
   }
 
 
   @Get('remove/:id')
   @UseGuards(JwtAuthGuard)
-  remove(@Param('id') id: string) {
-    return this.vehicleService.removeOneById(id);
+  remove(@Param('id') id: string, @UserObj() user: UserEntity,) {
+    return this.vehicleService.removeOneById(id, user.id);
   }
 
   @Get('/list')

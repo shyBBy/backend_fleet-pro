@@ -40,18 +40,6 @@ export class VehicleEntity extends BaseEntity {
   @Column()
   vehicleMileage: number;
 
-  // @ManyToOne(
-  //   type => CompanyBranchEntity,
-  //   companyBranch => companyBranch.vehicles,
-  // )
-  // assignedToCompanyBranchId: string;
-  //
-  // @ManyToOne(
-  //   type => DriverEntity,
-  //   driver => driver.vehicles,
-  // )
-  // assignedToDriverId: string;
-
   @Column({ nullable: true })
   photo: string;
 
@@ -72,4 +60,7 @@ export class VehicleEntity extends BaseEntity {
   
   @Column({ type: 'timestamp', default: () => 'CURRENT_TIMESTAMP', onUpdate: 'CURRENT_TIMESTAMP' })
   updateDate: Date;
+  
+  @Column()
+  placeName: string;
 }

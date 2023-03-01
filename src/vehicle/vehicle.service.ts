@@ -10,7 +10,7 @@ import {GetPaginatedListOfAllVehiclesResponse} from "../../types/vehicle";
 export class VehicleService {
   constructor(private dataSource: DataSource) {}
 
-  async create(vehicleCreateDto: VehicleCreateDto) {
+  async create(vehicleCreateDto: VehicleCreateDto, userId) {
     const {
       vehicleType,
       name,
@@ -25,6 +25,7 @@ export class VehicleService {
       yearOfProduction,
       firstRegistrationDate,
       policyNumber,
+      placeName,
     } = vehicleCreateDto;
 
     const isVehicleExist = await VehicleEntity.findOneBy({ vinNumber });
@@ -53,6 +54,8 @@ export class VehicleService {
     vehicle.yearOfProduction = yearOfProduction;
     vehicle.firstRegistrationDate = firstRegistrationDate;
     vehicle.policyNumber = policyNumber;
+    vehicle.placeName = placeName;
+    vehicle.addedByUserId = userId;
     await vehicle.save();
     return createResponse(true, 'Pomyślnie dodano pojazd do bazy danych', 200);
   }
@@ -151,8 +154,8 @@ export class VehicleService {
     }
   }
 
-  async removeOneById(id: string) {
-    const vehicle = await VehicleEntity.findOneBy({ id });
+  async removeOneById(vehicleId: string, userId) {
+    const vehicle = await VehicleEntity.findOneBy({ id: vehicleId });
 
     if (!vehicle) {
       throw new HttpException(

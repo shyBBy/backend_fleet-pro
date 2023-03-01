@@ -39,4 +39,7 @@ export class VehicleCreateDto {
 
   @IsNotEmpty()
   policyNumber: string;
+  
+  @IsNotEmpty()
+  placeName: string;
 }

@@ -39,4 +39,7 @@ export class VehicleUpdateDto {
 
   @IsOptional()
   policyNumber: string;
+  
+  @IsOptional()
+  placeName: string;
 }
