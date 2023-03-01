@@ -74,8 +74,7 @@ export class VehicleService {
     isCurrentVehicleInspection: boolean,
     vehicleType: string,
     vehicleMileage: number,
-    searchType: string,
-    searchValue: string,
+    search: string,
   ): Promise<GetPaginatedListOfAllVehiclesResponse> {
     const filterValues = {
       name,
@@ -100,34 +99,19 @@ export class VehicleService {
       });
     if (typeof sort === 'undefined') {
 
-      let searchValues = {}
-
-      switch (true) {
-        case !searchType && !searchValue:
-          searchValues = {};
-          break
-        case searchType === 'registerNumber':
-          searchValues = { registerNumber: Like(`%${searchValue}%`) };
-          break
-        case searchType === 'vinNumber':
-          searchValues = { vinNumber: Like(`%${searchValue}%`) };
-          break
-        //@TODO: odkomentowac jak zrobi się system oddziałów
-        // case searchType === 'placeName':
-        //   searchValues = { placeName: Like(`%${searchValue}%`) };
-        //   break
-        default:
-          searchValues = { name: Like(`%${searchValue}%`) };
-      }
 
       try {
-        const [vehicles, totalEntitiesCount] = await VehicleEntity.findAndCount(
-          {
-            where: { ...filteredValues, ...searchValues },
-            skip: maxOnPage * (page - 1),
-            take: maxOnPage,
-          },
-        );
+        const [vehicles, totalEntitiesCount] = await VehicleEntity.findAndCount({
+          where: [
+            {name: Like(`%${search}%`)},
+            {model: Like(`%${search}%`)},
+            {registerNumber: Like(`%${search}%`)},
+            {placeName: Like(`%${search}%`)},
+            {vinNumber: Like(`%${search}%`)},
+            ],
+          skip: maxOnPage * (page - 1),
+          take: maxOnPage,
+        })
         const pagesCount = Math.ceil(totalEntitiesCount / maxOnPage);
         if (!vehicles.length) {
           return {

@@ -46,8 +46,7 @@ export class VehicleController {
     @Query('isCurrentVehicleInspection') isCurrentVehicleInspection: boolean,
     @Query('vehicleType') vehicleType: string,
     @Query('vehicleMileage') vehicleMileage: string,
-    @Query('searchType') searchType: string,
-    @Query('searchValue') searchValue: string,
+    @Query('search') search: string,
   ): Promise<GetPaginatedListOfAllVehiclesResponse> {
     console.log(`W CONTROLLER TYPE: ${searchType}`)
     console.log(`W CONTROLLER VALUE: ${searchValue}`)
@@ -61,8 +60,7 @@ export class VehicleController {
         Boolean(isCurrentVehicleInspection),
         vehicleType,
         Number(vehicleMileage),
-        searchType,
-        searchValue,
+        search,
     );
   }
   
