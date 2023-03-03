@@ -63,4 +63,7 @@ export class VehicleEntity extends BaseEntity {
   
   @Column()
   placeName: string;
+
+  @Column()
+  addedByUserId: string;
 }

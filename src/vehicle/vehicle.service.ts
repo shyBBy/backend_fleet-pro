@@ -4,6 +4,7 @@ import { DataSource, Like } from 'typeorm';
 import {VehicleCreateDto} from "./dto/create-vehicle.dto";
 import {VehicleEntity} from "./entities/vehicle.entity";
 import {GetPaginatedListOfAllVehiclesResponse} from "../../types/vehicle";
+import {VehicleUpdateDto} from "./dto/update-vehicle.dto";
 
 
 @Injectable()
@@ -99,16 +100,17 @@ export class VehicleService {
       });
     if (typeof sort === 'undefined') {
 
-
-      try {
-        const [vehicles, totalEntitiesCount] = await VehicleEntity.findAndCount({
-          where: [
+      let searchOptions = [
             {name: Like(`%${search}%`)},
             {model: Like(`%${search}%`)},
             {registerNumber: Like(`%${search}%`)},
             {placeName: Like(`%${search}%`)},
             {vinNumber: Like(`%${search}%`)},
-            ],
+          ]
+
+      try {
+        const [vehicles, totalEntitiesCount] = await VehicleEntity.findAndCount({
+          where: !search ? filteredValues : searchOptions,
           skip: maxOnPage * (page - 1),
           take: maxOnPage,
         })
@@ -173,14 +175,15 @@ export class VehicleService {
   
   async updateVehicleData(vehicleUpdateDto: VehicleUpdateDto, userId: string, vehicleId: string) {
     
-    const updatedData = { 
-      ...vehicleUpdateDto,
-      editedByUserId: userId,
-    }
+    // const updatedData = {
+    //   ...vehicleUpdateDto,
+    //   editedByUserId: userId,
+    // }
     
     try {
       await VehicleEntity.update(vehicleId, {
-      updatedData
+        ...vehicleUpdateDto,
+        editedByUserId: userId,
     })
     } catch(e) {
       console.log(e)

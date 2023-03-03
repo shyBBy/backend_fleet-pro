@@ -54,6 +54,8 @@ export interface VehicleProfileCreate {
     yearOfProduction: string;
     firstRegistrationDate: string;
     policyNumber: string;
+    placeName: string;
+    addedByUserId: string;
 }
 
 
@@ -67,6 +69,8 @@ export interface VehicleProfileCreate {
 
 export interface VehicleProfileInterface extends VehicleProfileCreate {
     id: string;
+    updateDate: Date;
+    editedByUserId: string;
 }
 
 // export interface VehicleInterface extends VehicleUpdateInterface {

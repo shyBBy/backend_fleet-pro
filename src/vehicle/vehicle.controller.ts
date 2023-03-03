@@ -16,6 +16,7 @@ import {
 import { VehicleCreateDto } from './dto/create-vehicle.dto';
 import { UserObj } from '../decorators/user-object.decorator';
 import { UserEntity } from '../user/entities/user.entity';
+import {VehicleUpdateDto} from "./dto/update-vehicle.dto";
 
 @Controller('vehicle')
 export class VehicleController {
@@ -48,8 +49,6 @@ export class VehicleController {
     @Query('vehicleMileage') vehicleMileage: string,
     @Query('search') search: string,
   ): Promise<GetPaginatedListOfAllVehiclesResponse> {
-    console.log(`W CONTROLLER TYPE: ${searchType}`)
-    console.log(`W CONTROLLER VALUE: ${searchValue}`)
     return this.vehicleService.getAllPaginatedVehs(
         Number(page),
         sort,
@@ -68,7 +67,7 @@ export class VehicleController {
   @UseGuards(JwtAuthGuard)
   updateVehicleData(
     @Param('id') vehicleId: string, 
-    @Body() updateVehicleDto: VehicleUpdateDto, 
+    @Body() updateVehicleDto: VehicleUpdateDto,
     @UserObj() user: UserEntity,
     ) {
       return this.vehicleService.updateVehicleData(updateVehicleDto, user.id, vehicleId)
