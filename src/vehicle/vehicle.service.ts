@@ -1,4 +1,4 @@
-import {HttpException, HttpStatus,Injectable} from '@nestjs/common';
+import {HttpException, HttpStatus, Injectable, NotFoundException} from '@nestjs/common';
 import {createResponse} from '../utils/createResponse'
 import { DataSource, Like } from 'typeorm';
 import {VehicleCreateDto} from "./dto/create-vehicle.dto";
@@ -140,36 +140,43 @@ export class VehicleService {
     }
   }
 
-  async removeOneById(vehicleId: string, userId) {
-    const vehicle = await VehicleEntity.findOneBy({ id: vehicleId });
-
-    if (!vehicle) {
-      throw new HttpException(
-        {
-          message: `Pojazd o podanym ID nie znajduje się w bazie danych - nie da się go usunąć.`,
-          isSuccess: false,
-        },
-        HttpStatus.NOT_FOUND,
-      );
+  async removeOneById(id: string, userId) {
+    console.log('w service')
+    const result = await VehicleEntity.delete(id)
+    if (result.affected === 0) {
+      throw new NotFoundException(`Vehicle with ID ${id} not found`);
     }
 
-    try {
-      await vehicle.remove();
-      return createResponse(
-        true,
-        `Pomyślnie usunięto pojazd o nr rejestracyjnym: ${vehicle.registerNumber}`,
-        200,
-      );
-    } catch (e) {
-      console.log(e);
-      throw new HttpException(
-        {
-          message: `Cos poszlo nie tak`,
-          isSuccess: false,
-        },
-        HttpStatus.NOT_FOUND,
-      );
-    }
+    // const vehicle = await VehicleEntity.findOneBy({ id });
+    // console.log('weszlismy')
+    //
+    // if (!vehicle) {
+    //   throw new HttpException(
+    //     {
+    //       message: `Pojazd o podanym ID nie znajduje się w bazie danych - nie da się go usunąć.`,
+    //       isSuccess: false,
+    //     },
+    //     HttpStatus.NOT_FOUND,
+    //   );
+    // }
+    //
+    // try {
+    //   await vehicle.remove()
+    //   return createResponse(
+    //     true,
+    //     `Pomyślnie usunięto pojazd`,
+    //     200,
+    //   );
+    // } catch (e) {
+    //   console.log(e);
+    //   throw new HttpException(
+    //     {
+    //       message: `Cos poszlo nie tak`,
+    //       isSuccess: false,
+    //     },
+    //     HttpStatus.NOT_FOUND,
+    //   );
+    // }
   }
   
   

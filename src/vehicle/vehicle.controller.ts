@@ -5,7 +5,7 @@ import {
   Post,
   Body,
   Param,
-  Query,
+  Query, Delete,
 } from '@nestjs/common';
 import { VehicleService } from './vehicle.service';
 import { JwtAuthGuard } from '../guards/jwt-auth.guard';
@@ -25,15 +25,11 @@ export class VehicleController {
   @Post('/create')
   @UseGuards(JwtAuthGuard)
   create(@Body() createVehicleDto: VehicleCreateDto, @UserObj() user: UserEntity) {
+    console.log(createVehicleDto.placeName)
     return this.vehicleService.create(createVehicleDto, user.id);
   }
 
 
-  @Get('remove/:id')
-  @UseGuards(JwtAuthGuard)
-  remove(@Param('id') id: string, @UserObj() user: UserEntity,) {
-    return this.vehicleService.removeOneById(id, user.id);
-  }
 
   @Get('/list')
   @UseGuards(JwtAuthGuard)
@@ -72,23 +68,17 @@ export class VehicleController {
     ) {
       return this.vehicleService.updateVehicleData(updateVehicleDto, user.id, vehicleId)
     }
-  
-  
-  
-  
 
   @Get('/:id')
   @UseGuards(JwtAuthGuard)
   getOneById(@Param('id') id: string) {
     return this.vehicleService.getOneById(id);
   }
-  
-  
- 
 
-  // @Post('/:id/addtoplace')
-  // @UseGuards(JwtAuthGuard)
-  // addVehicleToPlace(@Body() addVehToPlace: AddVehToPlaceDto, @UserObj() user: UserEntity, @Param('id') vehId: string) {
-  //   return this.placeService.addVehicleToPlace(addVehicleToPlace, user, vehId)
-  // }
+  @Delete('/:id')
+  @UseGuards(JwtAuthGuard)
+  async remove(@Param('id') id: string, @UserObj() user: UserEntity): Promise<void> {
+    console.log('w kontrolerze')
+    return this.vehicleService.removeOneById(id, user.id);
+  }
 }
