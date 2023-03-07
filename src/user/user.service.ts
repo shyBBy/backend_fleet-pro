@@ -1,24 +1,30 @@
-import {BadRequestException, forwardRef, HttpException, HttpStatus, Inject, Injectable} from '@nestjs/common';
-import {UserCreateDto, UserProfileDto} from './dto/create-user.dto';
+import {
+  BadRequestException,
+  forwardRef,
+  HttpException,
+  HttpStatus,
+  Inject,
+  Injectable,
+} from '@nestjs/common';
+import { UserCreateDto, UserProfileDto } from './dto/create-user.dto';
 import { UserEntity } from './entities/user.entity';
 import { v4 as uuid } from 'uuid';
 import { DataSource } from 'typeorm';
-import {AuthService} from "../auth/auth.service";
-import {LoggedUserRes} from "../interfaces/user";
-import {hashPwd} from "../utils/password.utils";
+import { AuthService } from '../auth/auth.service';
+import { hashPwd } from '../utils/password.utils';
 
-import {createResponse} from '../utils/createResponse'
+import { createResponse } from '../utils/createResponse';
+import { LoggedUserRes } from '../../types';
 
 @Injectable()
 export class UserService {
   constructor(
-      private dataSource: DataSource,
-      @Inject(forwardRef(() => AuthService)) private authService: AuthService,
-      ) {}
-
+    private dataSource: DataSource,
+    @Inject(forwardRef(() => AuthService)) private authService: AuthService,
+  ) {}
 
   async create(createUserDto: UserCreateDto) {
-    const {email, password } = createUserDto;
+    const { email, password } = createUserDto;
 
     const checkEmail = await UserEntity.findOneBy({ email });
 
@@ -52,11 +58,11 @@ export class UserService {
 
   async getMe(user: UserEntity): Promise<LoggedUserRes> {
     const selectedUser = await this.dataSource
-        .createQueryBuilder()
-        .select('user')
-        .from(UserEntity, 'user')
-        .where({email: user.email})
-        .getOne();
+      .createQueryBuilder()
+      .select('user')
+      .from(UserEntity, 'user')
+      .where({ email: user.email })
+      .getOne();
     return {
       id: selectedUser.id,
       role: selectedUser.role,
@@ -66,74 +72,38 @@ export class UserService {
     };
   }
 
-
   async getByEmail(email: string): Promise<UserEntity | null> {
-    return await UserEntity.findOneBy({email})
+    return await UserEntity.findOneBy({ email });
   }
 
-
-
-  public async getById(id: string | UserEntity): Promise<any> {
-
-    try {
-      await this.dataSource
-          .createQueryBuilder()
-          .select('user.id')
-          .from(UserEntity, 'user')
-          .where({id: id})
-          .getOneOrFail()
-
-      return true
-
-    } catch (e) {
-
-      return false
-    }
-  }
-
-
-
-  async getUserProfile(userId: string, loggedUser: UserEntity): Promise<UserEntity | any> {
-
-    if (!await this.getById(userId) || await this.getById(loggedUser)) {
-      throw new HttpException(
-          {
-            message: `Nie ma użytkownika o podanym ID`,
-            isSuccess: false,
-          },
-          HttpStatus.NOT_FOUND,
-      );
-    }
-
+  async getUserProfile(
+    userId: string,
+    loggedUser: UserEntity,
+  ): Promise<UserEntity | null> {
     if (userId === loggedUser.id) {
-      return loggedUser
+      return await UserEntity.findOneBy({ id: loggedUser.id });
     }
 
-
+    return await UserEntity.findOneBy({ id: userId });
   }
-  
-  
-  async userProfileUpdate(user: UserEntity, userProfileUpdateDto: UserProfileDto){
-    
-    const userRes = await this.dataSource
-        .createQueryBuilder()
-        .select('user.id')
-        .from(UserEntity, 'user')
-        .where('user.id = :id', {id: user.id})
-        .getOne()
-    
-    if (!user){
+
+  async userProfileUpdate(
+    user: UserEntity,
+    userProfileUpdateDto: UserProfileDto,
+  ) {
+    const getUser = await this.dataSource
+      .createQueryBuilder()
+      .select('user.id')
+      .from(UserEntity, 'user')
+      .where('user.id = :id', { id: user.id })
+      .getOne();
+
+    if (!getUser) {
       throw new BadRequestException('Użytkownik nie istnieje.');
     }
-    
+
     try {
-      
       const {} = userProfileUpdateDto;
-      
-    } catch(e) {
-      
-    }
+    } catch (e) {}
   }
-  
- 
 }

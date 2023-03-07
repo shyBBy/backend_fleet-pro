@@ -20,32 +20,28 @@ export class VehicleEntity extends BaseEntity {
   @Column()
   registerNumber: string;
 
-  @Column()
+  @Column({
+    name: 'isCurrentVehicleInspection',
+  })
   isCurrentVehicleInspection: boolean;
 
-  @Column()
+  @Column({
+    type: 'datetime',
+    default: null,
+  })
   lastDateOfVehicleInspection: Date;
 
-  @Column()
+  @Column({
+    type: 'datetime',
+    default: null,
+  })
   nextDateOfVehicleInspection: Date;
 
   @Column()
   vehicleMileage: number;
 
-  // @ManyToOne(
-  //   type => CompanyBranchEntity,
-  //   companyBranch => companyBranch.vehicles,
-  // )
-  // assignedToCompanyBranchId: string;
-  //
-  // @ManyToOne(
-  //   type => DriverEntity,
-  //   driver => driver.vehicles,
-  // )
-  // assignedToDriverId: string;
-
   @Column({ nullable: true })
-  photo?: string;
+  photo: string;
 
   @Column()
   vinNumber: string;
@@ -58,4 +54,16 @@ export class VehicleEntity extends BaseEntity {
 
   @Column()
   policyNumber: string;
+  
+  @Column()
+  editedByUserId: string;
+  
+  @Column({ type: 'timestamp', default: () => 'CURRENT_TIMESTAMP', onUpdate: 'CURRENT_TIMESTAMP' })
+  updateDate: Date;
+  
+  @Column()
+  placeName: string;
+
+  @Column()
+  addedByUserId: string;
 }

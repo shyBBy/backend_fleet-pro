@@ -1,5 +1,5 @@
-import { USER_ROLE } from 'src/interfaces/user';
 import { BaseEntity, Column, Entity, PrimaryGeneratedColumn } from 'typeorm';
+import { USER_ROLE } from '../../../types';
 
 @Entity({
   database: 'fleetpro',
@@ -32,11 +32,10 @@ export class UserEntity extends BaseEntity {
   @Column({
     type: 'enum',
     enum: USER_ROLE,
+    enumName: 'user_role',
   })
   role: USER_ROLE;
 
   @Column()
   jobPosition: string;
-
-
 }

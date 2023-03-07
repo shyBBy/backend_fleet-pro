@@ -1,5 +1,5 @@
-import {USER_ROLE, UserCreate} from '../../interfaces/user';
-import { IsEmail, IsNotEmpty, IsString, IsOptional} from 'class-validator';
+import { IsEmail, IsNotEmpty, IsString, IsOptional } from 'class-validator';
+import { USER_ROLE, UserCreate } from '../../../types';
 
 export class UserCreateDto implements UserCreate {
   @IsEmail()
@@ -7,14 +7,11 @@ export class UserCreateDto implements UserCreate {
   @IsNotEmpty()
   email: string;
 
-
   @IsNotEmpty()
   password: string;
 }
 
-
 export class UserProfileDto {
-  
   @IsString()
   @IsNotEmpty()
   id: string;
@@ -32,37 +29,30 @@ export class UserProfileDto {
   @IsNotEmpty()
   email: string;
 
-
-   @IsString()
-   @IsNotEmpty()
+  @IsString()
+  @IsNotEmpty()
   password: string;
-
 
   @IsString()
   @IsNotEmpty()
   avatar: string;
 
-
   @IsString()
   @IsNotEmpty()
   jobPosition: string;
-  
+
   @IsOptional()
-  role: USER_ROLE
-  
+  role: USER_ROLE;
+
   @IsOptional()
   isActive: boolean | number;
-  
 }
 
-
 export class UserLoginDto implements UserCreate {
-  
   @IsEmail()
   @IsNotEmpty()
   email: string;
-  
-  
+
   @IsNotEmpty()
   password: string;
 }
