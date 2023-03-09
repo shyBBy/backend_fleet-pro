@@ -71,7 +71,6 @@ export class VehicleService {
     name: string,
     model: string,
     yearOfProduction: string,
-    isCurrentVehicleInspection: boolean,
     vehicleType: string,
     vehicleMileage: number,
     search: string,
@@ -80,7 +79,6 @@ export class VehicleService {
       name,
       model,
       yearOfProduction,
-      isCurrentVehicleInspection,
       vehicleType,
       vehicleMileage,
     };
