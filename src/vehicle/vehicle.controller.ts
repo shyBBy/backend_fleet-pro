@@ -78,7 +78,7 @@ export class VehicleController {
   @Delete('/:id')
   @UseGuards(JwtAuthGuard)
   async remove(@Param('id') id: string, @UserObj() user: UserEntity): Promise<void> {
-    console.log('w kontrolerze')
+
     return this.vehicleService.removeOneById(id, user.id);
   }
 }
