@@ -9,10 +9,14 @@ export class UserEntity extends BaseEntity {
   @PrimaryGeneratedColumn('uuid')
   id: string;
 
-  @Column()
+  @Column({
+    default: '',
+  })
   name: string;
 
-  @Column()
+  @Column({
+    default: '',
+  })
   surname: string;
 
   @Column()
@@ -26,16 +30,21 @@ export class UserEntity extends BaseEntity {
   })
   isActive: boolean;
 
-  @Column()
+  @Column({
+    default: '',
+  })
   avatar: string;
 
   @Column({
     type: 'enum',
     enum: USER_ROLE,
     enumName: 'user_role',
+    default: USER_ROLE.USER,
   })
   role: USER_ROLE;
 
-  @Column()
+  @Column({
+    default: '',
+  })
   jobPosition: string;
 }
