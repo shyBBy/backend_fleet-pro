@@ -188,6 +188,7 @@ export class VehicleService {
     // }
     
     try {
+
       await VehicleEntity.update(vehicleId, {
         ...vehicleUpdateDto,
         editedByUserId: userId,
