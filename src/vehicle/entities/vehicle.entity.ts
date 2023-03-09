@@ -8,19 +8,28 @@ export class VehicleEntity extends BaseEntity {
   @PrimaryGeneratedColumn('uuid')
   id: string;
 
-  @Column()
+  @Column({
+    default: '',
+  })
   vehicleType: string;
 
-  @Column()
+  @Column({
+    default: '',
+  })
   name: string;
 
-  @Column()
+  @Column({
+    default: '',
+  })
   model: string;
 
-  @Column()
+  @Column({
+    default: '',
+  })
   registerNumber: string;
 
   @Column({
+    default: null,
     name: 'isCurrentVehicleInspection',
   })
   isCurrentVehicleInspection: boolean;
@@ -37,33 +46,49 @@ export class VehicleEntity extends BaseEntity {
   })
   nextDateOfVehicleInspection: Date;
 
-  @Column()
+  @Column({
+    default: 0,
+  })
   vehicleMileage: number;
 
   @Column({ nullable: true })
   photo: string;
 
-  @Column()
+  @Column({
+    default: '',
+  })
   vinNumber: string;
 
-  @Column()
+  @Column({
+    default: '',
+  })
   yearOfProduction: string;
 
-  @Column()
+  @Column({
+    default: '',
+  })
   firstRegistrationDate: string;
 
-  @Column()
+  @Column({
+    default: '',
+  })
   policyNumber: string;
   
-  @Column()
+  @Column({
+    default: '',
+  })
   editedByUserId: string;
   
   @Column({ type: 'timestamp', default: () => 'CURRENT_TIMESTAMP', onUpdate: 'CURRENT_TIMESTAMP' })
   updateDate: Date;
   
-  @Column()
+  @Column({
+    default: '',
+  })
   placeName: string;
 
-  @Column()
+  @Column({
+    default: '',
+  })
   addedByUserId: string;
 }
