@@ -25,8 +25,9 @@ export class UserEntity extends BaseEntity {
   @Column()
   password: string;
 
+  //@TODO: Zrobić system aktywacyjny
   @Column({
-    default: false,
+    default: true,
   })
   isActive: boolean;
 

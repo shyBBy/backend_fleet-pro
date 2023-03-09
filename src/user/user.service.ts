@@ -46,7 +46,13 @@ export class UserService {
       await user.save();
       return createResponse(true, 'Pomyślnie utworzono konto', 200);
     } catch (e) {
-      console.log(e)
+      throw new HttpException(
+        {
+          message: `Coś poszło nie tak, spróbuj później.`,
+          isSuccess: false,
+        },
+        HttpStatus.NOT_FOUND,
+      );
     }
   }
 
