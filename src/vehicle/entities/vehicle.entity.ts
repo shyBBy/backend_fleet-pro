@@ -21,11 +21,6 @@ export class VehicleEntity extends BaseEntity {
   registerNumber: string;
 
   @Column({
-    default: true,
-  })
-  isCurrentVehicleInspection: boolean;
-
-  @Column({
     type: 'datetime',
     default: null,
   })
@@ -62,8 +57,8 @@ export class VehicleEntity extends BaseEntity {
   })
   editedByUserId: string;
   
-  @Column({ type: 'timestamp', default: () => 'CURRENT_TIMESTAMP', onUpdate: 'CURRENT_TIMESTAMP' })
-  updateDate: Date;
+  // @Column({ type: 'timestamp', default: () => 'CURRENT_TIMESTAMP', onUpdate: 'CURRENT_TIMESTAMP' })
+  // updateDate: Date;
   
   @Column()
   placeName: string;
