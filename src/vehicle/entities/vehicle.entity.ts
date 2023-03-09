@@ -21,7 +21,7 @@ export class VehicleEntity extends BaseEntity {
   registerNumber: string;
 
   @Column({
-    name: 'isCurrentVehicleInspection',
+    default: true,
   })
   isCurrentVehicleInspection: boolean;
 
@@ -37,7 +37,9 @@ export class VehicleEntity extends BaseEntity {
   })
   nextDateOfVehicleInspection: Date;
 
-  @Column()
+  @Column({
+    default: 0,
+  })
   vehicleMileage: number;
 
   @Column({ nullable: true })
@@ -55,7 +57,9 @@ export class VehicleEntity extends BaseEntity {
   @Column()
   policyNumber: string;
   
-  @Column()
+  @Column({
+    default: '',
+  })
   editedByUserId: string;
   
   @Column({ type: 'timestamp', default: () => 'CURRENT_TIMESTAMP', onUpdate: 'CURRENT_TIMESTAMP' })
@@ -64,6 +68,9 @@ export class VehicleEntity extends BaseEntity {
   @Column()
   placeName: string;
 
-  @Column()
+  @Column({
+    default: '',
+  })
   addedByUserId: string;
+
 }
