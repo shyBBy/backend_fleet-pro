@@ -45,7 +45,6 @@ export interface VehicleProfileCreate {
     name: string;
     model: string;
     registerNumber: string;
-    isCurrentVehicleInspection: boolean;
     lastDateOfVehicleInspection: Date;
     nextDateOfVehicleInspection: Date;
     vehicleMileage: number;
@@ -69,7 +68,6 @@ export interface VehicleProfileCreate {
 
 export interface VehicleProfileInterface extends VehicleProfileCreate {
     id: string;
-    updateDate: Date;
     editedByUserId: string;
 }
 

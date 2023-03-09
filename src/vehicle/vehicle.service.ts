@@ -46,7 +46,6 @@ export class VehicleService {
     vehicle.name = name;
     vehicle.model = model;
     vehicle.registerNumber = registerNumber;
-    vehicle.isCurrentVehicleInspection = isCurrentVehicleInspection;
     vehicle.nextDateOfVehicleInspection = nextDateOfVehicleInspection;
     vehicle.lastDateOfVehicleInspection = lastDateOfVehicleInspection;
     vehicle.vehicleMileage = vehicleMileage;

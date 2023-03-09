@@ -56,10 +56,7 @@ export class VehicleEntity extends BaseEntity {
     default: '',
   })
   editedByUserId: string;
-  
-  // @Column({ type: 'timestamp', default: () => 'CURRENT_TIMESTAMP', onUpdate: 'CURRENT_TIMESTAMP' })
-  // updateDate: Date;
-  
+
   @Column()
   placeName: string;
 
