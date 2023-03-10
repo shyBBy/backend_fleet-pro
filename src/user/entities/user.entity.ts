@@ -29,6 +29,12 @@ export class UserEntity extends BaseEntity {
     default: true,
   })
   isActive: boolean;
+  
+  @Column({
+    default: '',
+  })
+  activationCode: string;
+  
 
   @Column({
       default: '',

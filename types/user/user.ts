@@ -20,6 +20,7 @@ export interface UserProfile extends UserCreate {
     role: USER_ROLE | string;
     jobPosition: string;
     currentTokenId: string;
+    activationCode: string;
 
 }
 

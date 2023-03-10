@@ -38,11 +38,13 @@ export class UserService {
       );
     }
 
+
     try {
       const user = new UserEntity();
       user.id = uuid();
       user.email = email;
       user.password = hashPwd(password);
+      user.activationCode = ActivationCode.create();
       await user.save();
       return createResponse(true, 'Pomyślnie utworzono konto', 200);
     } catch (e) {

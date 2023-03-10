@@ -44,6 +44,11 @@ export class UserController {
     return this.userService.getUserProfile(userId, user);
   }
 
+
+  @Get('activation/:userId')
+  getOneAndCheckActivationCode(@Param('userId') userId: string)
+
+
   @Post('create')
   create(@Body() createUserDto: UserCreateDto) {
     return this.userService.create(createUserDto);
