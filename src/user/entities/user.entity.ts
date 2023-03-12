@@ -26,7 +26,7 @@ export class UserEntity extends BaseEntity {
   password: string;
 
   @Column({
-    default: true,
+    default: false,
   })
   isActive: boolean;
   

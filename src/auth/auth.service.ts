@@ -20,7 +20,10 @@ export class AuthService {
         if (user && user.password === hashPwd(password)) {
             return user;
         }
-        return null;
+        throw new BadRequestException(
+            'Błędny login lub hasło.',
+        );
+
     }
 
     async login(user: UserEntity, res: Response) {
@@ -29,9 +32,10 @@ export class AuthService {
         const oneDay = 1000 * 60 * 60 * 24;
         if (!user.isActive) {
             throw new BadRequestException(
-                'Your account is inactive. Please check Your mail and click to activation link.',
+                'Twoje konto jest nieaktywne, sprawdź proszę skrzynkę pocztową.',
             );
         }
+
         const userRes = await this.userService.getMe(user);
         return res
             .cookie('jwt', token, {

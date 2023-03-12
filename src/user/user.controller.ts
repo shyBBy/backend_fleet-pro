@@ -4,6 +4,7 @@ import {UserCreateDto, UserProfileDto,} from './dto/create-user.dto';
 import {JwtAuthGuard} from '../guards/jwt-auth.guard';
 import {UserObj} from '../decorators/user-object.decorator';
 import {UserEntity} from './entities/user.entity';
+import {ActivationUserDto} from "./dto/activation-user.dto";
 
 @Controller('user')
 export class UserController {
@@ -32,9 +33,10 @@ export class UserController {
     }
 
 
-    @Get('activation/:userId')
-    getOneAndCheckActivationCode(@Param('userId') userId: string) {
-        return ''
+    @Post('activation')
+    getOneAndCheckActivationCode(@Body() activationUserDto: ActivationUserDto) {
+        console.log('w kontrolerze')
+        return this.userService.activation(activationUserDto);
     }
 
 
