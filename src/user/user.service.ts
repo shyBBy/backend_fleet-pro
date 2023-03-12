@@ -148,6 +148,7 @@ export class UserService {
             }
 
             user.isActive = true
+            await user.save();
             return createResponse(true, 'Pomyślnie aktywowano konto, możesz się zalogować', 200)
 
         } catch (e) {
