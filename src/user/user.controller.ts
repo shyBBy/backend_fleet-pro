@@ -62,4 +62,12 @@ export class UserController {
     create(@Body() createUserDto: UserCreateDto) {
         return this.userService.create(createUserDto);
     }
+    
+    
+      @Delete('/:id')
+  @UseGuards(JwtAuthGuard)
+  async remove(@Param('id') id: string, @UserObj() user: UserEntity): Promise<void> {
+
+    return this.userService.removeOneById(id, user.id);
+  }
 }

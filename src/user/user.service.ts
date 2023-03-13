@@ -216,4 +216,23 @@ export class UserService {
         }
 
     }
+    
+    
+    
+    
+    async removeOneById(id: string, userId) {
+    console.log('w service')
+    const result = await UserEntity.delete(id)
+    if (result.affected === 0) {
+      throw new NotFoundException(`Uzytkownik o podanym ID:  ${id} nie istnieje.`);
+    }
+    }
+    
+    
+    
+    
+    
+    
+    
+    
 }
