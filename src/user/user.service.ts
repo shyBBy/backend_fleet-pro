@@ -116,6 +116,60 @@ export class UserService {
         } catch (e) {
         }
     }
+    
+    
+    async getAllPaginatedUsers(
+    page = 1,
+    sort: string,
+    order: 'ASC' | 'DESC',
+    email: string,
+    search: string,
+  ): Promise<GetPaginatedListOfAllUsersResponse> {
+    const maxOnPage = 10
+    const filterValues = {
+      email,
+    }
+    
+    if (typeof sort === 'undefined') {
+
+      let searchOptions = [
+            {email: Like(`%${search}%`)},
+            {isActive: Like(`%${search}%`)},
+            {role: Like(`%${search}%`)},
+          ]
+
+      try {
+        const [users, totalEntitiesCount] = await UserEntity.findAndCount({
+          where: !search ? filterValues : searchOptions,
+          skip: maxOnPage * (page - 1),
+          take: maxOnPage,
+        })
+        const pagesCount = Math.ceil(totalEntitiesCount / maxOnPage);
+        if (!vehicles.length) {
+          return {
+            users: [],
+            pagesCount: 0,
+            resultsCount: 0,
+          };
+        }
+        return {
+          users,
+          pagesCount,
+          resultsCount: totalEntitiesCount,
+        };
+      } catch (e) {
+        console.log(e);
+        throw new HttpException(
+          {
+            message: `Cos poszlo nie tak, spróbuj raz jeszcze.`,
+            isSuccess: false,
+          },
+          HttpStatus.BAD_REQUEST,
+        );
+      }
+    }
+  }
+
 
 
     async activation(activationUserDto: ActivationUserDto) {

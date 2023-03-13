@@ -32,6 +32,24 @@ export class UserController {
         return this.userService.getUserProfile(userId, user);
     }
 
+      @Get('/list')
+  @UseGuards(JwtAuthGuard)
+  @UseGuards(isAdmin)
+  getAll(
+    @Query('page') page: string,
+    @Query('sort') sort: string,
+    @Query('order') order: 'ASC' | 'DESC',
+    @Query('email') name: string,
+    @Query('search') search: string,
+  ): Promise<GetPaginatedListOfAllUsersResponse> {
+    return this.userService.getAllPaginatedUsers(
+        Number(page),
+        sort,
+        order,
+        email,
+        search,
+    );
+  }
 
     @Post('activation')
     getOneAndCheckActivationCode(@Body() activationUserDto: ActivationUserDto) {

@@ -23,9 +23,17 @@ export interface UserProfile extends UserCreate {
 
 }
 
-export type UserRes = Pick<UserProfile, 'id' | 'role' | 'email'>;
+export type UserRes = Pick<UserProfile, 'id' | 'role' | 'email' | 'isActive' | 'avatar' | 'jobPosition'>;
 
 export interface LoggedUserRes extends UserRes {
     name: string;
     surname: string;
+}
+
+export type GetListOfUsersResponse = UserRes[]
+
+export interface GetPaginatedListOfUsersResponse {
+  users: GetListOfUsersResponse;
+  pagesCount: number;
+  resultsCount: number;
 }
