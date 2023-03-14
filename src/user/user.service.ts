@@ -1,17 +1,26 @@
-import {BadRequestException, forwardRef, HttpException, HttpStatus, Inject, Injectable,} from '@nestjs/common';
+import {
+    BadRequestException,
+    forwardRef,
+    HttpException,
+    HttpStatus,
+    Inject,
+    Injectable,
+    NotFoundException,
+} from '@nestjs/common';
 import {UserCreateDto, UserProfileDto} from './dto/create-user.dto';
 import {UserEntity} from './entities/user.entity';
 import {v4 as uuid} from 'uuid';
-import {DataSource} from 'typeorm';
+import {DataSource, Like} from 'typeorm';
 import {AuthService} from '../auth/auth.service';
 import {hashPwd} from '../utils/password.utils';
 
 import {createResponse} from '../utils/createResponse';
-import {LoggedUserRes} from '../../types';
+import {GetPaginatedListOfAllUsersResponse, LoggedUserRes} from '../../types';
 import {ActivationCode} from "../utils/activationCodeCreater";
 import {ActivationUserDto} from "./dto/activation-user.dto";
-import { MailerService } from '@nestjs-modules/mailer';
+import {MailerService} from '@nestjs-modules/mailer';
 import {mailTemplate} from "../utils/mailTemplate";
+
 
 @Injectable()
 export class UserService {
@@ -75,9 +84,12 @@ export class UserService {
         return {
             id: selectedUser.id,
             role: selectedUser.role,
+            email: selectedUser.email,
+            isActive: selectedUser.isActive,
+            avatar: selectedUser.avatar,
+            jobPosition: selectedUser.jobPosition,
             name: selectedUser.name,
             surname: selectedUser.surname,
-            email: selectedUser.email,
         };
     }
 
@@ -116,60 +128,56 @@ export class UserService {
         } catch (e) {
         }
     }
-    
-    
+
+
     async getAllPaginatedUsers(
-    page = 1,
-    sort: string,
-    order: 'ASC' | 'DESC',
-    email: string,
-    search: string,
-  ): Promise<GetPaginatedListOfAllUsersResponse> {
-    const maxOnPage = 10
-    const filterValues = {
-      email,
-    }
-    
-    if (typeof sort === 'undefined') {
+        page = 1,
+        sort: string,
+        order: 'ASC' | 'DESC',
+        search: string,
+    ): Promise<GetPaginatedListOfAllUsersResponse> {
+        const maxOnPage = 10
+        const filterValues = {}
 
-      let searchOptions = [
-            {email: Like(`%${search}%`)},
-            {isActive: Like(`%${search}%`)},
-            {role: Like(`%${search}%`)},
-          ]
+        if (typeof sort === 'undefined') {
 
-      try {
-        const [users, totalEntitiesCount] = await UserEntity.findAndCount({
-          where: !search ? filterValues : searchOptions,
-          skip: maxOnPage * (page - 1),
-          take: maxOnPage,
-        })
-        const pagesCount = Math.ceil(totalEntitiesCount / maxOnPage);
-        if (!vehicles.length) {
-          return {
-            users: [],
-            pagesCount: 0,
-            resultsCount: 0,
-          };
+            let searchOptions = [
+                // {email: Like(`%${search}%`)},
+                {isActive: Like(`%${search}%`)},
+                {role: Like(`%${search}%`)},
+            ]
+
+            try {
+                const [users, totalEntitiesCount] = await UserEntity.findAndCount({
+                    where: !search ? filterValues : searchOptions,
+                    skip: maxOnPage * (page - 1),
+                    take: maxOnPage,
+                })
+                const pagesCount = Math.ceil(totalEntitiesCount / maxOnPage);
+                if (!users.length) {
+                    return {
+                        users: [],
+                        pagesCount: 0,
+                        resultsCount: 0,
+                    };
+                }
+                return {
+                    users,
+                    pagesCount,
+                    resultsCount: totalEntitiesCount,
+                };
+            } catch (e) {
+                console.log(e);
+                throw new HttpException(
+                    {
+                        message: `Cos poszlo nie tak, spróbuj raz jeszcze.`,
+                        isSuccess: false,
+                    },
+                    HttpStatus.BAD_REQUEST,
+                );
+            }
         }
-        return {
-          users,
-          pagesCount,
-          resultsCount: totalEntitiesCount,
-        };
-      } catch (e) {
-        console.log(e);
-        throw new HttpException(
-          {
-            message: `Cos poszlo nie tak, spróbuj raz jeszcze.`,
-            isSuccess: false,
-          },
-          HttpStatus.BAD_REQUEST,
-        );
-      }
     }
-  }
-
 
 
     async activation(activationUserDto: ActivationUserDto) {
@@ -216,23 +224,15 @@ export class UserService {
         }
 
     }
-    
-    
-    
-    
+
+
     async removeOneById(id: string, userId) {
-    console.log('w service')
-    const result = await UserEntity.delete(id)
-    if (result.affected === 0) {
-      throw new NotFoundException(`Uzytkownik o podanym ID:  ${id} nie istnieje.`);
+        console.log('w service')
+        const result = await UserEntity.delete(id)
+        if (result.affected === 0) {
+            throw new NotFoundException(`Uzytkownik o podanym ID:  ${id} nie istnieje.`);
+        }
     }
-    }
-    
-    
-    
-    
-    
-    
-    
-    
+
+
 }

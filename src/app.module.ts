@@ -9,6 +9,7 @@ import {ConfigModule} from '@nestjs/config';
 import {UserEntity} from './user/entities/user.entity';
 import {VehicleEntity} from './vehicle/entities/vehicle.entity';
 import {MailerModule} from "@nestjs-modules/mailer";
+import {AdminModule} from './admin/admin.module';
 
 @Module({
     imports: [
@@ -40,6 +41,7 @@ import {MailerModule} from "@nestjs-modules/mailer";
         UserModule,
         VehicleModule,
         AuthModule,
+        AdminModule,
     ],
     controllers: [AppController],
     providers: [AppService],

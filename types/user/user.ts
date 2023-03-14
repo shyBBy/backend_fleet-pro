@@ -32,7 +32,7 @@ export interface LoggedUserRes extends UserRes {
 
 export type GetListOfUsersResponse = UserRes[]
 
-export interface GetPaginatedListOfUsersResponse {
+export interface GetPaginatedListOfAllUsersResponse {
   users: GetListOfUsersResponse;
   pagesCount: number;
   resultsCount: number;
