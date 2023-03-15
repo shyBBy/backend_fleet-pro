@@ -8,8 +8,8 @@ export class AdminController {
   constructor(private readonly adminService: AdminService) {}
 
   @Post()
-  create(@Body() createAdminDto: CreateAdminDto) {
-    return this.adminService.create(createAdminDto);
+  addChangeToList(@Body() createLastChangeDto: CreateLastChangeDto) {
+    return this.adminService.create(createLastChangeDto);
   }
 
   @Get()
