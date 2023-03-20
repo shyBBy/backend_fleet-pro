@@ -2,6 +2,7 @@ import {Body, Controller, Delete, Get, Param, Post, Put, Query, UseGuards,} from
 import {UserService} from './user.service';
 import {UserCreateDto, UserProfileDto,} from './dto/create-user.dto';
 import {JwtAuthGuard} from '../guards/jwt-auth.guard';
+import { IsAdmin } from '../guards/is-admin';
 import {UserObj} from '../decorators/user-object.decorator';
 import {UserEntity} from './entities/user.entity';
 import {ActivationUserDto} from "./dto/activation-user.dto";
@@ -36,7 +37,7 @@ export class UserController {
     }
 
     @Get('/list')
-    @UseGuards(JwtAuthGuard)
+    @UseGuards(JwtAuthGuard, IsAdmin)
     // @UseGuards(IsAdmin)
     getAll(
         @Query('page') page: string,
@@ -63,6 +64,11 @@ export class UserController {
     create(@Body() createUserDto: UserCreateDto) {
         return this.userService.create(createUserDto);
     }
+    
+    
+    @Update('update/:id')
+    @UseGuards(JwtAuthGuard, IsAdmin)
+    async updateRole
 
 
     @Delete('/:id')
