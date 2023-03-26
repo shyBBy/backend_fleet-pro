@@ -1,5 +1,5 @@
 import {FilterRecords} from "../filter";
-import {VehicleTechEntity} from "../../src/vehicle/entities/vehicleTech.entity";
+
 
 export enum VEHICLE_BRAND {
     Mercedes = 'Mercedes',
@@ -70,7 +70,6 @@ export interface VehicleProfileCreate {
 export interface VehicleProfileInterface extends VehicleProfileCreate {
     id: string;
     editedByUserId: string;
-    // techInformation: VehicleTechEntity[];
 }
 
 // export interface VehicleInterface extends VehicleUpdateInterface {
@@ -91,6 +90,27 @@ export interface VehicleProfileInterface extends VehicleProfileCreate {
 //     firstRegistrationDate: string;
 //     policyNumber: string;
 // }
+
+export interface TechnicalDataInterface {
+    id: number;
+    engineCapacity: string;
+    enginePower: string;
+    fuel: string;
+    alternativeFuel: string;
+    CO2Emission: string;
+    avgFuelConsumption: string;
+    totalSeats: string;
+    seatedSeats: string;
+    vehicleWeight: string;
+    maxTrailerWeightWithBrakes: string;
+    maxTrailerWeightWithoutBrakes: string;
+    payload: string;
+    grossWeight: string;
+    numberOfAxles: string;
+    axleSpacing: string;
+    wheelSpacing: string;
+    maxAxleLoad: string;
+}
 
 
 export type GetOneVehResponse = VehicleProfileInterface

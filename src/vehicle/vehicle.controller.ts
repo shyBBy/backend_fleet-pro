@@ -70,7 +70,7 @@ export class VehicleController {
         return this.vehicleService.removeOneById(id, user.id);
     }
 
-    @Post('/:id/techinfo/add')
+    @Post('/:id/techdata/add')
     @UseGuards(JwtAuthGuard)
     addTechInfo(
         @Param('id') id: string,

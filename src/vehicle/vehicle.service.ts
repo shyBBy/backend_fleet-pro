@@ -6,7 +6,7 @@ import {VehicleEntity} from "./entities/vehicle.entity";
 import {GetPaginatedListOfAllVehiclesResponse} from "../../types/vehicle";
 import {VehicleUpdateDto} from "./dto/update-vehicle.dto";
 import {AddTechnicalDataDto} from "./dto/add-technical-data.dto";
-import {VehicleTechEntity} from "./entities/vehicleTech.entity";
+import {TechnicalDataEntity} from "./entities/technical-data.entity";
 
 
 @Injectable()
@@ -175,25 +175,21 @@ export class VehicleService {
         const {
             engineCapacity,
             enginePower,
-            fuelType,
-            alternativeFuelType,
-            co2Emissions,
-            averageFuelConsumption,
-
+            fuel,
+            alternativeFuel,
+            CO2Emission,
+            avgFuelConsumption,
+            totalSeats,
+            seatedSeats,
             vehicleWeight,
-            maximumPermissibleTrailerWeightWithBrakes,
-            maximumPermissibleTrailerWeightWithoutBrakes,
-            permissiblePayload,
-            maximumPermissibleTotalWeight,
-
-            wheelbase, averageWheelbase,
-            maximumAxisLoad,
-            vehicleWidth,
-            vehicleLength,
-            vehicleHeight,
-            cargoBedWidth,
-            cargoBedLength,
-            cargoBedHeight
+            maxTrailerWeightWithBrakes,
+            maxTrailerWeightWithoutBrakes,
+            payload,
+            grossWeight,
+            numberOfAxles,
+            axleSpacing,
+            wheelSpacing,
+            maxAxleLoad,
         } = addTechnicalDataDto
 
         const vehicle = await VehicleEntity.findOneBy({id: vehId});
@@ -208,32 +204,26 @@ export class VehicleService {
             );
         }
 
-        const vehicleTechInformation = new VehicleTechEntity()
+        const vehicleTechInformation = new TechnicalDataEntity()
         vehicleTechInformation.engineCapacity = engineCapacity;
         vehicleTechInformation.enginePower = enginePower;
-        vehicleTechInformation.fuelType = fuelType;
-        vehicleTechInformation.alternativeFuelType = alternativeFuelType;
-        vehicleTechInformation.co2Emission = co2Emissions;
-        vehicleTechInformation.averageFuelConsumption = averageFuelConsumption;
-        // vehicleTechInformation.totalNumberOfSeats = totalNumberOfSeats;
-        // vehicleTechInformation.numberOfPassengerSeats = numberOfPassengerSeats;
+        vehicleTechInformation.fuel = fuel;
+        vehicleTechInformation.alternativeFuel = alternativeFuel;
+        vehicleTechInformation.CO2Emission = CO2Emission;
+        vehicleTechInformation.avgFuelConsumption = avgFuelConsumption;
+        vehicleTechInformation.totalSeats = totalSeats;
+        vehicleTechInformation.seatedSeats = seatedSeats;
         vehicleTechInformation.vehicleWeight = vehicleWeight;
-        vehicleTechInformation.maximumPermissibleTrailerWeightWithBrakes = maximumPermissibleTrailerWeightWithBrakes;
-        vehicleTechInformation.maximumPermissibleTrailerWeightWithoutBrakes = maximumPermissibleTrailerWeightWithoutBrakes;
-        vehicleTechInformation.permissiblePayload = permissiblePayload;
-        vehicleTechInformation.maximumPermissibleTotalWeight = maximumPermissibleTotalWeight;
-        // vehicleTechInformation.numberOfAxles = numberOfAxles;
-        vehicleTechInformation.wheelbase = wheelbase;
-        vehicleTechInformation.averageWheelbase = averageWheelbase;
-        vehicleTechInformation.maximumAxisLoad = maximumAxisLoad;
-        vehicleTechInformation.vehicleWidth = vehicleWidth;
-        vehicleTechInformation.vehicleLength = vehicleLength;
-        vehicleTechInformation.vehicleHeight = vehicleHeight;
-        vehicleTechInformation.cargoBedWidth = cargoBedWidth;
-        vehicleTechInformation.cargoBedLength = cargoBedLength;
-        vehicleTechInformation.cargoBedHeight = cargoBedHeight;
-        // vehicleTechInformation.vehicleProfile = vehicle;
-        // await vehicleTechInformation.save();
+        vehicleTechInformation.maxTrailerWeightWithBrakes = maxTrailerWeightWithBrakes;
+        vehicleTechInformation.maxTrailerWeightWithoutBrakes = maxTrailerWeightWithoutBrakes;
+        vehicleTechInformation.payload = payload;
+        vehicleTechInformation.grossWeight = grossWeight;
+        vehicleTechInformation.numberOfAxles = numberOfAxles;
+        vehicleTechInformation.axleSpacing = axleSpacing;
+        vehicleTechInformation.wheelSpacing = wheelSpacing;
+        vehicleTechInformation.maxAxleLoad = maxAxleLoad;
+        vehicleTechInformation.vehicleProfile = vehicle;
+        await vehicleTechInformation.save();
         return createResponse(true, 'Pomyślnie uzupełniono informacje.', 200);
 
     }

@@ -1,74 +1,69 @@
-import {IsNotEmpty, IsNumber, IsOptional, IsString} from "class-validator";
+import {BaseEntity, Column, Entity, ManyToOne, PrimaryGeneratedColumn} from "typeorm";
+import {VehicleEntity} from "./vehicle.entity";
+
+@Entity({
+    database: 'fleetpro',
+    name: 'technical_data',
+})
+
+export class TechnicalDataEntity extends BaseEntity {
+
+    @PrimaryGeneratedColumn()
+    id: number;
 
 
-export class AddTechnicalDataDto {
-    @IsOptional()
-    @IsNumber()
-    engineCapacity: string;
+    @Column()
+    engineCapacity: string; // Pojemność silnika
 
-    @IsOptional()
-    @IsNumber()
+    @Column()
     enginePower: string; // Moc silnika
 
-    @IsOptional()
-    @IsString()
+    @Column()
     fuel: string; // Paliwo
 
-    @IsOptional()
-    @IsString()
+    @Column()
     alternativeFuel: string; // Paliwo alternatywne
 
-    @IsOptional()
-    @IsString()
+    @Column()
     CO2Emission: string; // Emisja CO₂
 
-    @IsOptional()
-    @IsString()
+    @Column()
     avgFuelConsumption: string; // Średnie zużycie paliwa na 100km
 
-    @IsOptional()
-    @IsNumber()
+    @Column()
     totalSeats: string; // Liczba miejsc ogółem
 
-    @IsOptional()
-    @IsNumber()
+    @Column()
     seatedSeats: string; // Liczba miejsc siedzących
 
-    @IsOptional()
-    @IsNumber()
+    @Column()
     vehicleWeight: string; // Masa własna pojazdu
 
-    @IsOptional()
-    @IsNumber()
+    @Column()
     maxTrailerWeightWithBrakes: string; // Maks. masa całkowita ciągniętej przyczepy z hamulcem
 
-    @IsOptional()
-    @IsNumber()
+    @Column()
     maxTrailerWeightWithoutBrakes: string; // Maks. masa całkowita ciągniętej przyczepy bez hamulca
 
-    @IsOptional()
-    @IsNumber()
+    @Column()
     payload: string; // Dopuszczalna ładowność
 
-    @IsOptional()
-    @IsNumber()
+    @Column()
     grossWeight: string; // Dopuszczalna masa całkowita
 
-    @IsOptional()
-    @IsNumber()
+    @Column()
     numberOfAxles: string; // Liczba osi
 
-    @IsOptional()
-    @IsNumber()
+    @Column()
     axleSpacing: string; // Rozstaw osi
 
-    @IsOptional()
-    @IsNumber()
+    @Column()
     wheelSpacing: string; // Rozstaw kół (średni)
 
-    @IsOptional()
-    @IsNumber()
+    @Column()
     maxAxleLoad: string; // Maksymalny nacisk na oś
 
 
+    @ManyToOne((type) => VehicleEntity, (entity) => entity.technicalData)
+    vehicleProfile: VehicleEntity;
 }
