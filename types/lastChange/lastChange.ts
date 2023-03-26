@@ -1,23 +1,23 @@
 export interface LastChangeCreate {
   
   title: string;
-  reason: string;
+  description: string;
 }
 
 export interface LastChangeSingle extends LastChangeCreate {
   
     id: string
-    editedByUser: string
-    editedDate: Date
+    addedByUser: string
+    addedDate: string
 }
 
+export type ChangeRes = LastChangeSingle
 
-export type LastChangeSingleRes = LastChangeSingle
+export type GetListOfLastChangesResponse = ChangeRes[]
 
-export type GetListOffLastChangesResponse = LastChangeSingleRes[]
 
-export interface GetListOffPaginatedLastChangesRes {
-  lastChanges: GetListOffLastChangesResponse,
+export interface GetPaginatedListOfAllLastChangesResponse {
+  lastChanges: GetListOfLastChangesResponse;
   pagesCount: number;
   resultsCount: number;
 }

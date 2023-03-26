@@ -1,4 +1,5 @@
 import {FilterRecords} from "../filter";
+import {VehicleTechEntity} from "../../src/vehicle/entities/vehicleTech.entity";
 
 export enum VEHICLE_BRAND {
     Mercedes = 'Mercedes',
@@ -69,6 +70,7 @@ export interface VehicleProfileCreate {
 export interface VehicleProfileInterface extends VehicleProfileCreate {
     id: string;
     editedByUserId: string;
+    // techInformation: VehicleTechEntity[];
 }
 
 // export interface VehicleInterface extends VehicleUpdateInterface {

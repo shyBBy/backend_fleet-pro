@@ -142,7 +142,7 @@ export class UserService {
         if (typeof sort === 'undefined') {
 
             let searchOptions = [
-                // {email: Like(`%${search}%`)},
+                {email: Like(`%${search}%`)},
                 {isActive: Like(`%${search}%`)},
                 {role: Like(`%${search}%`)},
             ]

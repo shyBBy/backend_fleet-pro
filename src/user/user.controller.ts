@@ -7,6 +7,7 @@ import {UserEntity} from './entities/user.entity';
 import {ActivationUserDto} from "./dto/activation-user.dto";
 
 import {GetPaginatedListOfAllUsersResponse} from "../../types";
+import {IsAdmin} from "../guards/is-admin.guard";
 
 
 @Controller('user')
@@ -36,8 +37,7 @@ export class UserController {
     }
 
     @Get('/list')
-    @UseGuards(JwtAuthGuard)
-    // @UseGuards(IsAdmin)
+    @UseGuards(JwtAuthGuard, IsAdmin)
     getAll(
         @Query('page') page: string,
         @Query('sort') sort: string,
@@ -66,7 +66,7 @@ export class UserController {
 
 
     @Delete('/:id')
-    @UseGuards(JwtAuthGuard)
+    @UseGuards(JwtAuthGuard, IsAdmin)
     async remove(@Param('id') id: string, @UserObj() user: UserEntity): Promise<void> {
 
         return this.userService.removeOneById(id, user.id);

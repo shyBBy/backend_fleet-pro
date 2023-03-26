@@ -1,13 +1,11 @@
-
+import {IsString} from "class-validator";
         
   export class CreateLastChangeDto {
     
-    IsString();
+    @IsString()
     title: string;
     
-    IsString()
-    reason: string
-    
+    @IsString()
+    description: string
 
-    
   }
