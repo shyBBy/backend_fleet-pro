@@ -30,12 +30,6 @@ export class UserController {
         return this.userService.userProfileUpdate(user, userProfileUpdateDto);
     }
 
-    @Get('profile/:userId')
-    @UseGuards(JwtAuthGuard)
-    userProfile(@Param('userId') userId: string, @UserObj() user: UserEntity) {
-        return this.userService.getUserProfile(userId, user);
-    }
-
     @Get('/list')
     @UseGuards(JwtAuthGuard, IsAdmin)
     getAll(
@@ -71,4 +65,10 @@ export class UserController {
 
         return this.userService.removeOneById(id, user.id);
     }
+    
+        @Get('/:userId')
+        @UseGuards(JwtAuthGuard)
+        userProfile(@Param('userId') userId: string, @UserObj() user: UserEntity) {
+          return this.userService.getUserProfile(userId, user);
+        }
 }
