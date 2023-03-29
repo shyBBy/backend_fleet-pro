@@ -15,7 +15,7 @@ import {AuthService} from '../auth/auth.service';
 import {hashPwd} from '../utils/password.utils';
 
 import {createResponse} from '../utils/createResponse';
-import {GetPaginatedListOfAllUsersResponse, LoggedUserRes} from '../../types';
+import {GetPaginatedListOfAllUsersResponse, UserRes} from '../../types';
 import {ActivationCode} from "../utils/activationCodeCreater";
 import {ActivationUserDto} from "./dto/activation-user.dto";
 import {MailerService} from '@nestjs-modules/mailer';
@@ -74,7 +74,7 @@ export class UserService {
         }
     }
 
-    async getMe(user: UserEntity): Promise<LoggedUserRes> {
+    async getMe(user: UserEntity): Promise<UserRes> {
         const selectedUser = await this.dataSource
             .createQueryBuilder()
             .select('user')
@@ -83,13 +83,13 @@ export class UserService {
             .getOne();
         return {
             id: selectedUser.id,
-            role: selectedUser.role,
+            name: selectedUser.name,
             email: selectedUser.email,
+            surname: selectedUser.surname,
             isActive: selectedUser.isActive,
             avatar: selectedUser.avatar,
+            role: selectedUser.role,
             jobPosition: selectedUser.jobPosition,
-            name: selectedUser.name,
-            surname: selectedUser.surname,
         };
     }
 

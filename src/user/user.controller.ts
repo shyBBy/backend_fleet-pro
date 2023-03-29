@@ -65,10 +65,10 @@ export class UserController {
 
         return this.userService.removeOneById(id, user.id);
     }
-    
-        @Get('/:userId')
-        @UseGuards(JwtAuthGuard)
-        userProfile(@Param('userId') userId: string, @UserObj() user: UserEntity) {
-          return this.userService.getUserProfile(userId, user);
-        }
+
+    @Get('/:userId')
+    @UseGuards(JwtAuthGuard)
+    userProfile(@Param('userId') userId: string, @UserObj() user: UserEntity) {
+        return this.userService.getUserProfile(userId, user);
+    }
 }
