@@ -233,6 +233,10 @@ export class UserService {
             throw new NotFoundException(`Uzytkownik o podanym ID:  ${id} nie istnieje.`);
         }
     }
+    
+    async updateUser(id: string, user: UserRes) {
+      
+    }
 
 
 }

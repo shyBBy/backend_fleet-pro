@@ -57,6 +57,16 @@ export class UserController {
     create(@Body() createUserDto: UserCreateDto) {
         return this.userService.create(createUserDto);
     }
+    
+    @Put(':id')
+    @UseGuards(JwtAuthGuard)
+    async updateUser(
+      @Param('id') id: string,
+      @Body() user: UserRes,
+    ): Promise < void > {
+      return this.userService.updateUser(id, user);
+    }
+    
 
 
     @Delete('/:id')
