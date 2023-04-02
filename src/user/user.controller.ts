@@ -55,7 +55,6 @@ export class UserController {
 
     @Post('activation')
     getOneAndCheckActivationCode(@Body() activationUserDto: ActivationUserDto) {
-        console.log('w kontrolerze')
         return this.userService.activation(activationUserDto);
     }
 

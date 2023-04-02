@@ -141,7 +141,6 @@ export class VehicleService {
     }
 
     async removeOneById(id: string, userId) {
-        console.log('w service')
         const result = await VehicleEntity.delete(id)
         if (result.affected === 0) {
             throw new NotFoundException(`Vehicle with ID ${id} not found`);

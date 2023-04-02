@@ -16,7 +16,6 @@ export class VehicleController {
     @Post('/create')
     @UseGuards(JwtAuthGuard)
     create(@Body() createVehicleDto: VehicleCreateDto, @UserObj() user: UserEntity) {
-        console.log(createVehicleDto.placeName)
         return this.vehicleService.create(createVehicleDto, user.id);
     }
 
