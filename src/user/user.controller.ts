@@ -6,7 +6,7 @@ import {UserObj} from '../decorators/user-object.decorator';
 import {UserEntity} from './entities/user.entity';
 import {ActivationUserDto} from "./dto/activation-user.dto";
 
-import {GetPaginatedListOfAllUsersResponse} from "../../types";
+import {GetPaginatedListOfAllUsersResponse, UserRes} from "../../types";
 import {IsAdmin} from "../guards/is-admin.guard";
 
 
@@ -21,14 +21,6 @@ export class UserController {
         return this.userService.getMe(user);
     }
 
-    @Put('/')
-    @UseGuards(JwtAuthGuard)
-    userProfileUpdate(
-        @UserObj() user: UserEntity,
-        @Body() userProfileUpdateDto: UserProfileDto,
-    ) {
-        return this.userService.userProfileUpdate(user, userProfileUpdateDto);
-    }
 
     @Get('/list')
     @UseGuards(JwtAuthGuard, IsAdmin)
@@ -62,9 +54,10 @@ export class UserController {
     @UseGuards(JwtAuthGuard)
     async updateUser(
       @Param('id') id: string,
-      @Body() user: UserRes,
-    ): Promise < void > {
-      return this.userService.updateUser(id, user);
+      @Body() userProfileUpdateDto: UserProfileDto,
+      @UserObj() loggedUser: UserRes
+    ) {
+      return this.userService.userProfileUpdate(loggedUser, userProfileUpdateDto, id);
     }
     
 

@@ -45,7 +45,10 @@ export class UserProfileDto {
   role: USER_ROLE;
 
   @IsOptional()
-  isActive: boolean | number;
+  isActive: boolean | number | string;
+
+  @IsOptional()
+  placeName: string;
 }
 
 export class UserLoginDto implements UserCreate {

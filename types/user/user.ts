@@ -20,6 +20,7 @@ export interface UserProfile extends UserCreate {
     jobPosition: string;
     currentTokenId: string;
     activationCode: string;
+    placeName: string;
 
 }
 
@@ -32,6 +33,7 @@ export interface UserProfileRes {
     avatar?: string;
     role: USER_ROLE | string;
     jobPosition: string;
+    placeName: string;
 }
 
 export type UserRes = UserProfileRes

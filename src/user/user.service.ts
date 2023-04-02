@@ -15,7 +15,7 @@ import {AuthService} from '../auth/auth.service';
 import {hashPwd} from '../utils/password.utils';
 
 import {createResponse} from '../utils/createResponse';
-import {GetPaginatedListOfAllUsersResponse, UserRes} from '../../types';
+import {GetPaginatedListOfAllUsersResponse, USER_ROLE, UserRes} from '../../types';
 import {ActivationCode} from "../utils/activationCodeCreater";
 import {ActivationUserDto} from "./dto/activation-user.dto";
 import {MailerService} from '@nestjs-modules/mailer';
@@ -90,6 +90,7 @@ export class UserService {
             avatar: selectedUser.avatar,
             role: selectedUser.role,
             jobPosition: selectedUser.jobPosition,
+            placeName: selectedUser.placeName,
         };
     }
 
@@ -108,24 +109,49 @@ export class UserService {
         return await UserEntity.findOneBy({id: userId});
     }
 
-    async userProfileUpdate(
-        user: UserEntity,
-        userProfileUpdateDto: UserProfileDto,
-    ) {
-        const getUser = await this.dataSource
-            .createQueryBuilder()
-            .select('user.id')
-            .from(UserEntity, 'user')
-            .where('user.id = :id', {id: user.id})
-            .getOne();
 
-        if (!getUser) {
+    async userProfileUpdate(
+        loggedUser: UserRes,
+        userProfileUpdateDto: UserProfileDto,
+        userId: string
+    ) {
+        const {name, surname, email, placeName, jobPosition, role, isActive} = userProfileUpdateDto
+        const user = await UserEntity.findOneBy({id: userId})
+
+        if (!user) {
             throw new BadRequestException('Użytkownik nie istnieje.');
         }
 
+        let isActiveBoolean: boolean;
+
+        switch (isActive) {
+            case 'Aktywny':
+                isActiveBoolean = true;
+                break;
+            case 'Nieaktywny':
+                isActiveBoolean = false;
+                break;
+            default:
+                isActiveBoolean = false;
+        }
+
         try {
-            const {} = userProfileUpdateDto;
+            user.name = name;
+            user.surname = surname;
+            user.email = email;
+
+            if (loggedUser.role === 'Administrator') {
+                user.placeName = placeName
+                user.role = role
+                user.jobPosition = jobPosition
+                user.isActive = isActiveBoolean
+            }
+
+            await user.save()
+
+            return createResponse(true, 'Pomyślnie edytowano informacje.', 200);
         } catch (e) {
+            console.log('Catch error:', e)
         }
     }
 
@@ -232,10 +258,6 @@ export class UserService {
         if (result.affected === 0) {
             throw new NotFoundException(`Uzytkownik o podanym ID:  ${id} nie istnieje.`);
         }
-    }
-    
-    async updateUser(id: string, user: UserRes) {
-      
     }
 
 
