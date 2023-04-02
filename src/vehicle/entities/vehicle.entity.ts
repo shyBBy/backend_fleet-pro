@@ -1,68 +1,76 @@
-import { BaseEntity, Column, Entity, PrimaryGeneratedColumn } from 'typeorm';
+
+import {BaseEntity, Column, Entity, OneToMany, PrimaryGeneratedColumn} from 'typeorm';
+import {TechnicalDataEntity} from "./technical-data.entity";
 
 @Entity({
-  database: 'fleetpro',
-  name: 'vehicle',
+    database: 'fleetpro',
+    name: 'vehicle',
 })
 export class VehicleEntity extends BaseEntity {
-  @PrimaryGeneratedColumn('uuid')
-  id: string;
+    @PrimaryGeneratedColumn('uuid')
+    id: string;
 
-  @Column()
-  vehicleType: string;
+    @Column()
+    vehicleType: string;
 
-  @Column()
-  name: string;
+    @Column()
+    name: string;
 
-  @Column()
-  model: string;
+    @Column()
+    model: string;
 
-  @Column()
-  registerNumber: string;
+    @Column()
+    registerNumber: string;
 
-  @Column({
-    type: 'datetime',
-    default: null,
-  })
-  lastDateOfVehicleInspection: Date;
+    @Column({
+        type: 'datetime',
+        default: null,
+    })
+    lastDateOfVehicleInspection: Date;
 
-  @Column({
-    type: 'datetime',
-    default: null,
-  })
-  nextDateOfVehicleInspection: Date;
+    @Column({
+        type: 'datetime',
+        default: null,
+    })
+    nextDateOfVehicleInspection: Date;
 
-  @Column({
-    default: 0,
-  })
-  vehicleMileage: number;
+    @Column({
+        default: 0,
+    })
+    vehicleMileage: number;
 
-  @Column({ nullable: true })
-  photo: string;
+    @Column({nullable: true})
+    photo: string;
 
-  @Column()
-  vinNumber: string;
+    @Column()
+    vinNumber: string;
 
-  @Column()
-  yearOfProduction: string;
+    @Column()
+    yearOfProduction: string;
 
-  @Column()
-  firstRegistrationDate: string;
+    @Column()
+    firstRegistrationDate: string;
 
-  @Column()
-  policyNumber: string;
-  
-  @Column({
-    default: '',
-  })
-  editedByUserId: string;
+    @Column()
+    policyNumber: string;
 
-  @Column()
-  placeName: string;
+    @Column({
+        default: '',
+    })
+    editedByUserId: string;
 
-  @Column({
-    default: '',
-  })
-  addedByUserId: string;
+    @Column()
+    placeName: string;
+
+    @Column({
+        default: '',
+    })
+    addedByUserId: string;
+
+
+    @OneToMany(() => TechnicalDataEntity, (entity) => entity.vehicleProfile, {
+        eager: true
+    })
+    technicalData: TechnicalDataEntity[];
 
 }

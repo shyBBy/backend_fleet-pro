@@ -20,12 +20,34 @@ export interface UserProfile extends UserCreate {
     jobPosition: string;
     currentTokenId: string;
     activationCode: string;
+    placeName: string;
 
 }
 
-export type UserRes = Pick<UserProfile, 'id' | 'role' | 'email'>;
-
-export interface LoggedUserRes extends UserRes {
+export interface UserProfileRes {
+    id: string;
     name: string;
+    email: string;
     surname: string;
+    isActive: Boolean;
+    avatar?: string;
+    role: USER_ROLE | string;
+    jobPosition: string;
+    placeName: string;
+}
+
+export type UserRes = UserProfileRes
+
+// export interface LoggedUserRes extends UserRes {
+//     name: string;
+//     surname: string;
+// }
+
+
+export type GetListOfUsersResponse = UserRes[]
+
+export interface GetPaginatedListOfAllUsersResponse {
+    users: GetListOfUsersResponse;
+    pagesCount: number;
+    resultsCount: number;
 }

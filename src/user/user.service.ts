@@ -1,17 +1,29 @@
-import {BadRequestException, forwardRef, HttpException, HttpStatus, Inject, Injectable,} from '@nestjs/common';
+import {
+    BadRequestException,
+    forwardRef,
+    HttpException,
+    HttpStatus,
+    Inject,
+    Injectable,
+    NotFoundException, Post,
+} from '@nestjs/common';
 import {UserCreateDto, UserProfileDto} from './dto/create-user.dto';
 import {UserEntity} from './entities/user.entity';
 import {v4 as uuid} from 'uuid';
-import {DataSource} from 'typeorm';
+import {DataSource, Like} from 'typeorm';
 import {AuthService} from '../auth/auth.service';
 import {hashPwd} from '../utils/password.utils';
 
 import {createResponse} from '../utils/createResponse';
-import {LoggedUserRes} from '../../types';
+import {GetPaginatedListOfAllUsersResponse, MulterDiskUploadedFiles, USER_ROLE, UserRes} from '../../types';
 import {ActivationCode} from "../utils/activationCodeCreater";
 import {ActivationUserDto} from "./dto/activation-user.dto";
-import { MailerService } from '@nestjs-modules/mailer';
+import {MailerService} from '@nestjs-modules/mailer';
 import {mailTemplate} from "../utils/mailTemplate";
+import * as fs from "fs";
+import * as path from "path";
+import {storageDir} from "../utils/storage";
+import {deleteFile} from "../utils/deleteFile";
 
 @Injectable()
 export class UserService {
@@ -65,7 +77,7 @@ export class UserService {
         }
     }
 
-    async getMe(user: UserEntity): Promise<LoggedUserRes> {
+    async getMe(user: UserEntity): Promise<UserRes> {
         const selectedUser = await this.dataSource
             .createQueryBuilder()
             .select('user')
@@ -74,10 +86,14 @@ export class UserService {
             .getOne();
         return {
             id: selectedUser.id,
-            role: selectedUser.role,
             name: selectedUser.name,
-            surname: selectedUser.surname,
             email: selectedUser.email,
+            surname: selectedUser.surname,
+            isActive: selectedUser.isActive,
+            avatar: selectedUser.avatar,
+            role: selectedUser.role,
+            jobPosition: selectedUser.jobPosition,
+            placeName: selectedUser.placeName,
         };
     }
 
@@ -96,24 +112,124 @@ export class UserService {
         return await UserEntity.findOneBy({id: userId});
     }
 
-    async userProfileUpdate(
-        user: UserEntity,
-        userProfileUpdateDto: UserProfileDto,
-    ) {
-        const getUser = await this.dataSource
-            .createQueryBuilder()
-            .select('user.id')
-            .from(UserEntity, 'user')
-            .where('user.id = :id', {id: user.id})
-            .getOne();
 
-        if (!getUser) {
+    async userProfileUpdate(
+        loggedUser: UserRes,
+        userProfileUpdateDto: UserProfileDto,
+        userId: string
+    ) {
+        const {name, surname, email, placeName, jobPosition, role, isActive} = userProfileUpdateDto
+        const user = await UserEntity.findOneBy({id: userId})
+
+        if (!user) {
             throw new BadRequestException('Użytkownik nie istnieje.');
         }
 
+        let isActiveBoolean: boolean;
+
+        switch (isActive) {
+            case 'Aktywny':
+                isActiveBoolean = true;
+                break;
+            case 'Nieaktywny':
+                isActiveBoolean = false;
+                break;
+            default:
+                isActiveBoolean = false;
+        }
+
         try {
-            const {} = userProfileUpdateDto;
+            user.name = name;
+            user.surname = surname;
+            user.email = email;
+
+            if (loggedUser.role === 'Administrator') {
+                user.placeName = placeName
+                user.role = role
+                user.jobPosition = jobPosition
+                user.isActive = isActiveBoolean
+            }
+
+            await user.save()
+
+            return createResponse(true, 'Pomyślnie edytowano informacje.', 200);
         } catch (e) {
+            console.log('Catch error:', e)
+        }
+    }
+
+
+    async uploadAvatar(loggedUser: UserRes, id: string, files: MulterDiskUploadedFiles) {
+        const photo = files?.avatar?.[0] ?? null;
+        console.log({photo})
+        try {
+            const user = await UserEntity.findOneBy({id})
+
+            if (!user) {
+                throw new BadRequestException('Użytkownik nie istnieje.');
+            }
+
+            if(photo) {
+                user.avatar = photo.filename
+            }
+            await user.save()
+        } catch (e) {
+            try {
+                if(photo) {
+                    deleteFile(photo.filename, 'user-avatars')
+                }
+            } catch (e2) {}
+
+            throw e;
+        }
+    }
+
+    async getAllPaginatedUsers(
+        page = 1,
+        sort: string,
+        order: 'ASC' | 'DESC',
+        search: string,
+    ): Promise<GetPaginatedListOfAllUsersResponse> {
+        const maxOnPage = 10
+        const filterValues = {}
+
+        if (typeof sort === 'undefined') {
+
+            let searchOptions = [
+                {email: Like(`%${search}%`)},
+                {isActive: Like(`%${search}%`)},
+                {role: Like(`%${search}%`)},
+            ]
+
+            try {
+                const [users, totalEntitiesCount] = await UserEntity.findAndCount({
+                    where: !search ? filterValues : searchOptions,
+                    skip: maxOnPage * (page - 1),
+                    take: maxOnPage,
+                })
+                const pagesCount = Math.ceil(totalEntitiesCount / maxOnPage);
+                if (!users.length) {
+                    return {
+                        users: [],
+                        pagesCount: 0,
+                        resultsCount: 0,
+                    };
+                }
+                return {
+                    users,
+                    pagesCount,
+                    resultsCount: totalEntitiesCount,
+                };
+            } catch (e) {
+                console.log(e);
+                throw new HttpException(
+                    {
+                        message: `Cos poszlo nie tak, spróbuj raz jeszcze.`,
+                        isSuccess: false,
+                    },
+                    HttpStatus.BAD_REQUEST,
+                );
+            }
         }
     }
 
@@ -162,4 +278,47 @@ export class UserService {
         }
 
     }
+
+
+    async removeOneById(id: string, userId) {
+        const user = await UserEntity.findOneBy({id})
+        try {
+            if (user.avatar !== null) {
+                deleteFile(user.avatar, 'user-avatars')
+            }
+            const result = await UserEntity.delete(id)
+            if (result.affected === 0) {
+                throw new NotFoundException(`Uzytkownik o podanym ID:  ${id} nie istnieje.`);
+            }
+        } catch (e) {
+
+        }
+
+    }
+
+
+
+
+
+    async getPhoto(id: string, res: any){
+        try {
+            const user = await UserEntity.findOneBy({id})
+            if(!user) {
+                throw new NotFoundException(`Uzytkownik o podanym ID:  ${id} nie istnieje.`);
+            }
+            if(!user.avatar){
+                throw new NotFoundException(`Użytkownik nie posiada zdjęcia`);
+            }
+
+            res.sendFile(
+                user.avatar,
+                {
+                    root: path.join(storageDir(), 'users-avatar'),
+                },
+            )
+        } catch (e){
+            throw e;
+        }
+    }
+
 }

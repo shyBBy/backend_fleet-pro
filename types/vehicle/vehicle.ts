@@ -1,5 +1,6 @@
 import {FilterRecords} from "../filter";
 
+
 export enum VEHICLE_BRAND {
     Mercedes = 'Mercedes',
     Renault = 'Renault',
@@ -89,6 +90,27 @@ export interface VehicleProfileInterface extends VehicleProfileCreate {
 //     firstRegistrationDate: string;
 //     policyNumber: string;
 // }
+
+export interface TechnicalDataInterface {
+    id: number;
+    engineCapacity: string;
+    enginePower: string;
+    fuel: string;
+    alternativeFuel: string;
+    CO2Emission: string;
+    avgFuelConsumption: string;
+    totalSeats: string;
+    seatedSeats: string;
+    vehicleWeight: string;
+    maxTrailerWeightWithBrakes: string;
+    maxTrailerWeightWithoutBrakes: string;
+    payload: string;
+    grossWeight: string;
+    numberOfAxles: string;
+    axleSpacing: string;
+    wheelSpacing: string;
+    maxAxleLoad: string;
+}
 
 
 export type GetOneVehResponse = VehicleProfileInterface
