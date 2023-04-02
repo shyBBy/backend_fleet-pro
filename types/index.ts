@@ -4,3 +4,4 @@ export * from './filter';
 export * from './error';
 export * from './department';
 export * from './lastChange';
+export * from './file';

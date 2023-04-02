@@ -5,7 +5,7 @@ import {
     HttpStatus,
     Inject,
     Injectable,
-    NotFoundException,
+    NotFoundException, Post,
 } from '@nestjs/common';
 import {UserCreateDto, UserProfileDto} from './dto/create-user.dto';
 import {UserEntity} from './entities/user.entity';
@@ -15,12 +15,15 @@ import {AuthService} from '../auth/auth.service';
 import {hashPwd} from '../utils/password.utils';
 
 import {createResponse} from '../utils/createResponse';
-import {GetPaginatedListOfAllUsersResponse, USER_ROLE, UserRes} from '../../types';
+import {GetPaginatedListOfAllUsersResponse, MulterDiskUploadedFiles, USER_ROLE, UserRes} from '../../types';
 import {ActivationCode} from "../utils/activationCodeCreater";
 import {ActivationUserDto} from "./dto/activation-user.dto";
 import {MailerService} from '@nestjs-modules/mailer';
 import {mailTemplate} from "../utils/mailTemplate";
-
+import * as fs from "fs";
+import * as path from "path";
+import {storageDir} from "../utils/storage";
+import {deleteFile} from "../utils/deleteFile";
 
 @Injectable()
 export class UserService {
@@ -156,6 +159,30 @@ export class UserService {
     }
 
 
+    async uploadAvatar(loggedUser: UserRes, id: string, files: MulterDiskUploadedFiles) {
+        const photo = files?.avatar?.[0] ?? null;
+        try {
+            const user = await UserEntity.findOneBy({id})
+
+            if (!user) {
+                throw new BadRequestException('Użytkownik nie istnieje.');
+            }
+
+            if(photo) {
+                user.avatar = photo.filename
+            }
+            await user.save()
+        } catch (e) {
+            try {
+                if(photo) {
+                    deleteFile(photo.filename, 'user-avatars')
+                }
+            } catch (e2) {}
+
+            throw e;
+        }
+    }
+
     async getAllPaginatedUsers(
         page = 1,
         sort: string,
@@ -253,12 +280,41 @@ export class UserService {
 
 
     async removeOneById(id: string, userId) {
-        console.log('w service')
-        const result = await UserEntity.delete(id)
-        if (result.affected === 0) {
-            throw new NotFoundException(`Uzytkownik o podanym ID:  ${id} nie istnieje.`);
+        const user = await UserEntity.findOneBy({id})
+        try {
+            if (user.avatar !== null) {
+                deleteFile(user.avatar, 'user-avatars')
+            }
+            const result = await UserEntity.delete(id)
+            if (result.affected === 0) {
+                throw new NotFoundException(`Uzytkownik o podanym ID:  ${id} nie istnieje.`);
+            }
+        } catch (e) {
+
         }
+
     }
 
+
+    async getPhoto(id: string, res: any){
+        try {
+            const user = await UserEntity.findOneBy({id})
+            if(!user) {
+                throw new NotFoundException(`Uzytkownik o podanym ID:  ${id} nie istnieje.`);
+            }
+            if(!user.avatar){
+                throw new NotFoundException(`Użytkownik nie posiada zdjęcia`);
+            }
+
+            res.sendFile(
+                user.avatar,
+                {
+                    root: path.join(storageDir(), 'users-avatar'),
+                },
+            )
+        } catch (e){
+            throw e;
+        }
+    }
 
 }

@@ -37,7 +37,8 @@ export class UserEntity extends BaseEntity {
 
 
     @Column({
-        default: '',
+        default: null,
+        nullable: true,
     })
     avatar: string;
 

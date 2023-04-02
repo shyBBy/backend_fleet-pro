@@ -40,6 +40,9 @@
     "class-validator": "^0.14.0",
     "cookie-parser": "^1.4.6",
     "dotenv": "^16.0.3",
+    "joi": "^17.9.1",
+    "mime": "^3.0.0",
+    "multer": "^1.4.5-lts.1",
     "mysql": "^2.18.1",
     "nodemailer": "^6.9.1",
     "passport": "^0.6.0",
@@ -48,6 +51,8 @@
     "reflect-metadata": "^0.1.13",
     "rimraf": "^3.0.2",
     "rxjs": "^7.2.0",
+    "sanitize-filename": "^1.6.3",
+    "sharp": "^0.32.0",
     "typeorm": "^0.3.11",
     "uuid": "^9.0.0"
   },
