@@ -161,6 +161,7 @@ export class UserService {
 
     async uploadAvatar(loggedUser: UserRes, id: string, files: MulterDiskUploadedFiles) {
         const photo = files?.avatar?.[0] ?? null;
+        console.log({photo})
         try {
             const user = await UserEntity.findOneBy({id})
 
@@ -294,6 +295,9 @@ export class UserService {
         }
 
     }
+
+
+
 
 
     async getPhoto(id: string, res: any){

@@ -73,7 +73,7 @@ export class UserController {
                 maxCount: 1,
             },
         ], {
-            storage: multerStorage(path.join(storageDir(), 'user-avatars'))
+            storage: multerStorage(path.join(storageDir(), 'users-avatars'))
         }
     ))
     @UseGuards(JwtAuthGuard)
