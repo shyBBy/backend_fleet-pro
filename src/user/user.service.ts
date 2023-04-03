@@ -170,11 +170,11 @@ export class UserService {
             }
 
             if(avatar) {
-                // if(user.avatar) {
-                //     fs.unlinkSync(
-                //         path.join(storageDir(), 'user-avatars', avatar.filename)
-                //     );
-                // }
+                if(user.avatar) {
+                    fs.unlinkSync(
+                        path.join(storageDir(), 'user-avatars', user.avatar)
+                    );
+                }
                 user.avatar = avatar.filename
             }
             await user.save()
