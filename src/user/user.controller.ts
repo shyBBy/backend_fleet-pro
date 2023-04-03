@@ -6,8 +6,9 @@ import {
     Param,
     Post,
     Put,
-    Query, Res,
-    UploadedFiles,
+    Query,
+    Res,
+    UploadedFile, UploadedFiles,
     UseGuards,
     UseInterceptors,
 } from '@nestjs/common';
@@ -16,12 +17,11 @@ import {UserCreateDto, UserProfileDto,} from './dto/create-user.dto';
 import {JwtAuthGuard} from '../guards/jwt-auth.guard';
 import {UserObj} from '../decorators/user-object.decorator';
 import {UserEntity} from './entities/user.entity';
+import {FileFieldsInterceptor, FileInterceptor} from '@nestjs/platform-express';
 import {ActivationUserDto} from "./dto/activation-user.dto";
-
+import * as path from 'path';
 import {GetPaginatedListOfAllUsersResponse, MulterDiskUploadedFiles, UserRes} from "../../types";
 import {IsAdmin} from "../guards/is-admin.guard";
-import {FileFieldsInterceptor} from "@nestjs/platform-express";
-import * as path from "path";
 import {multerStorage, storageDir} from "../utils/storage";
 
 
@@ -65,36 +65,32 @@ export class UserController {
         return this.userService.create(createUserDto);
     }
 
-
-    @Post('upload')
-    @UseInterceptors(FileFieldsInterceptor([
-            {
-                name: 'avatar',
-                maxCount: 1,
-            },
-        ], {
-            storage: multerStorage(path.join(storageDir(), 'users-avatars'))
-        }
-    ))
-    @UseGuards(JwtAuthGuard)
-    async uploadUserAvatar(
-        @Param('id') id: string,
-        @UserObj() loggedUser: UserRes,
+    @Post(':userId/avatar')
+    @UseInterceptors(
+        FileFieldsInterceptor([
+                {
+                    name: 'avatar', maxCount: 10,
+                },
+            ], {storage: multerStorage(path.join(storageDir(), 'user-avatars'))},
+        ),
+    )
+    uploadAvatar(
+        @Param('userId') userId: string,
         @UploadedFiles() files: MulterDiskUploadedFiles,
-    ) {
-        return this.userService.uploadAvatar(loggedUser, id, files)
+    ): Promise<any> {
+        return this.userService.uploadAvatar(userId, files);
     }
-    
+
+
     @Put(':id')
     @UseGuards(JwtAuthGuard)
     async updateUser(
-      @Param('id') id: string,
-      @Body() userProfileUpdateDto: UserProfileDto,
-      @UserObj() loggedUser: UserRes
+        @Param('id') id: string,
+        @Body() userProfileUpdateDto: UserProfileDto,
+        @UserObj() loggedUser: UserRes
     ) {
-      return this.userService.userProfileUpdate(loggedUser, userProfileUpdateDto, id);
+        return this.userService.userProfileUpdate(loggedUser, userProfileUpdateDto, id);
     }
-    
 
 
     @Delete('/:id')

@@ -23,7 +23,7 @@ import {mailTemplate} from "../utils/mailTemplate";
 import * as fs from "fs";
 import * as path from "path";
 import {storageDir} from "../utils/storage";
-import {deleteFile} from "../utils/deleteFile";
+// import {deleteFile} from "../utils/deleteFile";
 
 @Injectable()
 export class UserService {
@@ -159,9 +159,9 @@ export class UserService {
     }
 
 
-    async uploadAvatar(loggedUser: UserRes, id: string, files: MulterDiskUploadedFiles) {
-        const photo = files?.avatar?.[0] ?? null;
-        console.log({photo})
+    async uploadAvatar(id: string, files: MulterDiskUploadedFiles) {
+        const avatar = files?.avatar?.[0] ?? null;
+
         try {
             const user = await UserEntity.findOneBy({id})
 
@@ -169,16 +169,23 @@ export class UserService {
                 throw new BadRequestException('Użytkownik nie istnieje.');
             }
 
-            if(photo) {
-                user.avatar = photo.filename
+            if(avatar) {
+                // if(user.avatar) {
+                //     fs.unlinkSync(
+                //         path.join(storageDir(), 'user-avatars', avatar.filename)
+                //     );
+                // }
+                user.avatar = avatar.filename
             }
             await user.save()
         } catch (e) {
             try {
-                if(photo) {
-                    deleteFile(photo.filename, 'user-avatars')
+                if (avatar) {
+                    fs.unlinkSync(
+                        path.join(storageDir(), 'user-avatars', avatar.filename)
+                    );
                 }
-            } catch (e2) {}
+            }catch(e2) {}
 
             throw e;
         }
@@ -284,7 +291,9 @@ export class UserService {
         const user = await UserEntity.findOneBy({id})
         try {
             if (user.avatar !== null) {
-                deleteFile(user.avatar, 'user-avatars')
+                fs.unlinkSync(
+                    path.join(storageDir(), 'user-avatars', user.avatar)
+                );
             }
             const result = await UserEntity.delete(id)
             if (result.affected === 0) {
@@ -313,7 +322,7 @@ export class UserService {
             res.sendFile(
                 user.avatar,
                 {
-                    root: path.join(storageDir(), 'users-avatar'),
+                    root: path.join(storageDir(), 'user-avatars'),
                 },
             )
         } catch (e){
