@@ -26,7 +26,7 @@ export class VehicleCreateDto {
   vehicleMileage: number;
 
   @IsOptional()
-  photo: string;
+  avatar: string;
 
   @IsNotEmpty()
   vinNumber: string;

@@ -26,7 +26,7 @@ export class VehicleUpdateDto {
   vehicleMileage: number;
 
   @IsOptional()
-  photo: string;
+  avatar: string;
 
   @IsOptional()
   vinNumber: string;

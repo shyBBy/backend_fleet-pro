@@ -39,8 +39,12 @@ export class VehicleEntity extends BaseEntity {
     })
     vehicleMileage: number;
 
-    @Column({nullable: true})
-    photo: string;
+    @Column({
+      default: null,
+      nullable: true
+      
+    })
+    avatar: string;
 
     @Column()
     vinNumber: string;
