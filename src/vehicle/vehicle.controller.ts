@@ -1,4 +1,4 @@
-import {Body, Controller, Delete, Get, Param, Post, Query, UseGuards,} from '@nestjs/common';
+import {Body, Controller, Delete, Get, Param, Post, Query, UseGuards, UseInterceptors, UploadedFiles, UploadedFile} from '@nestjs/common';
 import {VehicleService} from './vehicle.service';
 import {JwtAuthGuard} from '../guards/jwt-auth.guard';
 import {GetPaginatedListOfAllVehiclesResponse,} from '../../types/vehicle';
@@ -7,6 +7,13 @@ import {UserObj} from '../decorators/user-object.decorator';
 import {UserEntity} from '../user/entities/user.entity';
 import {VehicleUpdateDto} from "./dto/update-vehicle.dto";
 import {AddTechnicalDataDto} from "./dto/add-technical-data.dto";
+import {multerStorage, storageDir} from "../utils/storage";
+import {MulterDiskUploadedFiles} from "types"
+import {FileFieldsInterceptor, FileInterceptor} from '@nestjs/platform-express';
+
+
+
+
 
 @Controller('vehicle')
 export class VehicleController {
@@ -47,6 +54,22 @@ export class VehicleController {
         );
     }
 
+        @Post(':vehicleId/avatar')
+    @UseInterceptors(
+        FileFieldsInterceptor([
+                {
+                    name: 'avatar', maxCount: 10,
+                },
+            ], {storage: multerStorage(path.join(storageDir(), 'vehicle-avatars'))},
+        ),
+    )
+    uploadAvatar(
+        @Param('vehicleId') vehicleId: string,
+        @UploadedFiles() files: MulterDiskUploadedFiles,
+    ): Promise<any> {
+        return this.vehicleService.uploadAvatar(vehicleId, files);
+    }
+    
     @Post('/update/:id')
     @UseGuards(JwtAuthGuard)
     updateVehicleData(

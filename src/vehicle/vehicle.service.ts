@@ -150,6 +150,40 @@ export class VehicleService {
     }
 
 
+    async uploadAvatar(id: string, files: MulterDiskUploadedFiles) {
+        const avatar = files?.avatar?.[0] ?? null;
+
+        try {
+            const vehicle = await VehicleEntity.findOneBy({id})
+
+            if (!vehicle) {
+                throw new BadRequestException('Pojazd nie istnieje');
+            }
+
+            if(avatar) {
+                if(vehicle.avatar) {
+                    fs.unlinkSync(
+                        path.join(storageDir(), 'vehicle-avatars', vehicle.avatar)
+                    );
+                }
+                vehicle.avatar = avatar.filename
+            }
+            await vehicle.save()
+        } catch (e) {
+            try {
+                if (avatar) {
+                    fs.unlinkSync(
+                        path.join(storageDir(), 'vehicle-avatars', avatar.filename)
+                    );
+                }
+            }catch(e2) {}
+
+            throw e;
+        }
+    }
+    
+
+
     async updateVehicleData(vehicleUpdateDto: VehicleUpdateDto, userId: string, vehicleId: string) {
 
 
