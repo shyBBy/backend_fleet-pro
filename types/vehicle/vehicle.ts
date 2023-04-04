@@ -49,7 +49,6 @@ export interface VehicleProfileCreate {
     lastDateOfVehicleInspection: Date;
     nextDateOfVehicleInspection: Date;
     vehicleMileage: number;
-    avatar?: string;
     vinNumber: string;
     yearOfProduction: string;
     firstRegistrationDate: string;

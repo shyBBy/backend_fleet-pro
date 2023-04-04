@@ -1,18 +1,26 @@
-import {Body, Controller, Delete, Get, Param, Post, Query, UseGuards, UseInterceptors, UploadedFiles, UploadedFile} from '@nestjs/common';
+import {
+    Body,
+    Controller,
+    Delete,
+    Get,
+    Param,
+    Post,
+    Query, Res,
+    UploadedFiles,
+    UseGuards,
+    UseInterceptors
+} from '@nestjs/common';
 import {VehicleService} from './vehicle.service';
 import {JwtAuthGuard} from '../guards/jwt-auth.guard';
-import {GetPaginatedListOfAllVehiclesResponse,} from '../../types/vehicle';
+import {GetPaginatedListOfAllVehiclesResponse, MulterDiskUploadedFiles} from 'types';
 import {VehicleCreateDto} from './dto/create-vehicle.dto';
 import {UserObj} from '../decorators/user-object.decorator';
 import {UserEntity} from '../user/entities/user.entity';
 import {VehicleUpdateDto} from "./dto/update-vehicle.dto";
 import {AddTechnicalDataDto} from "./dto/add-technical-data.dto";
 import {multerStorage, storageDir} from "../utils/storage";
-import {MulterDiskUploadedFiles} from "types"
-import {FileFieldsInterceptor, FileInterceptor} from '@nestjs/platform-express';
-
-
-
+import {FileFieldsInterceptor} from '@nestjs/platform-express';
+import * as path from "path";
 
 
 @Controller('vehicle')
@@ -54,7 +62,7 @@ export class VehicleController {
         );
     }
 
-        @Post(':vehicleId/avatar')
+    @Post(':vehicleId/avatar')
     @UseInterceptors(
         FileFieldsInterceptor([
                 {
@@ -69,7 +77,7 @@ export class VehicleController {
     ): Promise<any> {
         return this.vehicleService.uploadAvatar(vehicleId, files);
     }
-    
+
     @Post('/update/:id')
     @UseGuards(JwtAuthGuard)
     updateVehicleData(
@@ -98,7 +106,15 @@ export class VehicleController {
     addTechInfo(
         @Param('id') id: string,
         @Body() addTechnicalDataDto: AddTechnicalDataDto,
-        ) {
+    ) {
         return this.vehicleService.addTechnicalInfo(addTechnicalDataDto, id)
+    }
+
+    @Get('/photo/:id')
+    async getPhoto(
+        @Param('id') id: string,
+        @Res() res: any,
+    ): Promise<any> {
+        return this.vehicleService.getPhoto(id, res)
     }
 }

@@ -1,12 +1,16 @@
-import {HttpException, HttpStatus, Injectable, NotFoundException} from '@nestjs/common';
+import {BadRequestException, HttpException, HttpStatus, Injectable, NotFoundException} from '@nestjs/common';
 import {createResponse} from '../utils/createResponse'
 import {DataSource, Like} from 'typeorm';
 import {VehicleCreateDto} from "./dto/create-vehicle.dto";
 import {VehicleEntity} from "./entities/vehicle.entity";
-import {GetPaginatedListOfAllVehiclesResponse} from "../../types/vehicle";
+import {GetPaginatedListOfAllVehiclesResponse, MulterDiskUploadedFiles} from "types";
 import {VehicleUpdateDto} from "./dto/update-vehicle.dto";
 import {AddTechnicalDataDto} from "./dto/add-technical-data.dto";
 import {TechnicalDataEntity} from "./entities/technical-data.entity";
+import {storageDir} from "../utils/storage";
+import * as fs from "fs";
+import * as path from "path";
+import {UserEntity} from "../user/entities/user.entity";
 
 
 @Injectable()
@@ -20,11 +24,9 @@ export class VehicleService {
             name,
             model,
             registerNumber,
-            isCurrentVehicleInspection,
             nextDateOfVehicleInspection,
             lastDateOfVehicleInspection,
             vehicleMileage,
-            photo,
             vinNumber,
             yearOfProduction,
             firstRegistrationDate,
@@ -52,7 +54,6 @@ export class VehicleService {
         vehicle.nextDateOfVehicleInspection = nextDateOfVehicleInspection;
         vehicle.lastDateOfVehicleInspection = lastDateOfVehicleInspection;
         vehicle.vehicleMileage = vehicleMileage;
-        vehicle.photo = photo;
         vehicle.vinNumber = vinNumber;
         vehicle.yearOfProduction = yearOfProduction;
         vehicle.firstRegistrationDate = firstRegistrationDate;
@@ -153,6 +154,8 @@ export class VehicleService {
     async uploadAvatar(id: string, files: MulterDiskUploadedFiles) {
         const avatar = files?.avatar?.[0] ?? null;
 
+        console.log('w serwisie', {avatar})
+
         try {
             const vehicle = await VehicleEntity.findOneBy({id})
 
@@ -160,8 +163,8 @@ export class VehicleService {
                 throw new BadRequestException('Pojazd nie istnieje');
             }
 
-            if(avatar) {
-                if(vehicle.avatar) {
+            if (avatar) {
+                if (vehicle.avatar) {
                     fs.unlinkSync(
                         path.join(storageDir(), 'vehicle-avatars', vehicle.avatar)
                     );
@@ -176,12 +179,12 @@ export class VehicleService {
                         path.join(storageDir(), 'vehicle-avatars', avatar.filename)
                     );
                 }
-            }catch(e2) {}
+            } catch (e2) {
+            }
 
             throw e;
         }
     }
-    
 
 
     async updateVehicleData(vehicleUpdateDto: VehicleUpdateDto, userId: string, vehicleId: string) {
@@ -201,6 +204,27 @@ export class VehicleService {
         return createResponse(true, 'Pomyślnie zaaktualizowano dane pojazdu', 200);
 
 
+    }
+
+    async getPhoto(id: string, res: any) {
+        try {
+            const vehicle = await VehicleEntity.findOneBy({id})
+            if (!vehicle) {
+                throw new NotFoundException(`Pojazd o podanym id:  ${id} nie istnieje.`);
+            }
+            if (!vehicle.avatar) {
+                throw new NotFoundException(`Pojazd nie posiada avatara.`);
+            }
+
+            res.sendFile(
+                vehicle.avatar,
+                {
+                    root: path.join(storageDir(), 'vehicle-avatars'),
+                },
+            )
+        } catch (e) {
+            throw e;
+        }
     }
 
 

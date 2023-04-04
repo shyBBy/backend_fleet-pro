@@ -5,7 +5,7 @@ import {
     HttpStatus,
     Inject,
     Injectable,
-    NotFoundException, Post,
+    NotFoundException,
 } from '@nestjs/common';
 import {UserCreateDto, UserProfileDto} from './dto/create-user.dto';
 import {UserEntity} from './entities/user.entity';
@@ -15,7 +15,7 @@ import {AuthService} from '../auth/auth.service';
 import {hashPwd} from '../utils/password.utils';
 
 import {createResponse} from '../utils/createResponse';
-import {GetPaginatedListOfAllUsersResponse, MulterDiskUploadedFiles, USER_ROLE, UserRes} from '../../types';
+import {GetPaginatedListOfAllUsersResponse, MulterDiskUploadedFiles, UserRes} from '../../types';
 import {ActivationCode} from "../utils/activationCodeCreater";
 import {ActivationUserDto} from "./dto/activation-user.dto";
 import {MailerService} from '@nestjs-modules/mailer';
@@ -23,6 +23,7 @@ import {mailTemplate} from "../utils/mailTemplate";
 import * as fs from "fs";
 import * as path from "path";
 import {storageDir} from "../utils/storage";
+
 // import {deleteFile} from "../utils/deleteFile";
 
 @Injectable()
@@ -169,8 +170,8 @@ export class UserService {
                 throw new BadRequestException('Użytkownik nie istnieje.');
             }
 
-            if(avatar) {
-                if(user.avatar) {
+            if (avatar) {
+                if (user.avatar) {
                     fs.unlinkSync(
                         path.join(storageDir(), 'user-avatars', user.avatar)
                     );
@@ -185,7 +186,8 @@ export class UserService {
                         path.join(storageDir(), 'user-avatars', avatar.filename)
                     );
                 }
-            }catch(e2) {}
+            } catch (e2) {
+            }
 
             throw e;
         }
@@ -306,16 +308,13 @@ export class UserService {
     }
 
 
-
-
-
-    async getPhoto(id: string, res: any){
+    async getPhoto(id: string, res: any) {
         try {
             const user = await UserEntity.findOneBy({id})
-            if(!user) {
+            if (!user) {
                 throw new NotFoundException(`Uzytkownik o podanym ID:  ${id} nie istnieje.`);
             }
-            if(!user.avatar){
+            if (!user.avatar) {
                 throw new NotFoundException(`Użytkownik nie posiada zdjęcia`);
             }
 
@@ -325,7 +324,7 @@ export class UserService {
                     root: path.join(storageDir(), 'user-avatars'),
                 },
             )
-        } catch (e){
+        } catch (e) {
             throw e;
         }
     }

@@ -8,7 +8,7 @@ import {
     Put,
     Query,
     Res,
-    UploadedFile, UploadedFiles,
+    UploadedFiles,
     UseGuards,
     UseInterceptors,
 } from '@nestjs/common';
@@ -17,7 +17,7 @@ import {UserCreateDto, UserProfileDto,} from './dto/create-user.dto';
 import {JwtAuthGuard} from '../guards/jwt-auth.guard';
 import {UserObj} from '../decorators/user-object.decorator';
 import {UserEntity} from './entities/user.entity';
-import {FileFieldsInterceptor, FileInterceptor} from '@nestjs/platform-express';
+import {FileFieldsInterceptor} from '@nestjs/platform-express';
 import {ActivationUserDto} from "./dto/activation-user.dto";
 import * as path from 'path';
 import {GetPaginatedListOfAllUsersResponse, MulterDiskUploadedFiles, UserRes} from "../../types";
