@@ -4,7 +4,7 @@ import * as mime from 'mime';
 import {v4 as uuid} from 'uuid';
 
 export function storageDir() {
-    return path.join(__dirname, '../../storage');
+    return path.join(__dirname, 'storage');
 }
 
 // export function multerStorage(dest: string) {
