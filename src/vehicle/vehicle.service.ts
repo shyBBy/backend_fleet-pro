@@ -142,11 +142,23 @@ export class VehicleService {
     }
 
     async removeOneById(id: string, userId) {
-        console.log('w service')
-        const result = await VehicleEntity.delete(id)
-        if (result.affected === 0) {
+        const vehicle = await VehicleEntity.findOne({
+            relations: ['technicalData'],
+            where: {id},
+        })
+
+        if (!vehicle) {
             throw new NotFoundException(`Vehicle with ID ${id} not found`);
         }
+
+        // usuń wszystkie encje TechnicalDataEntity powiązane z daną encją VehicleEntity
+        for (const technicalData of vehicle.technicalData) {
+            await technicalData.remove();
+        }
+
+        // usuń encję VehicleEntity
+        await vehicle.remove();
+
 
     }
 
