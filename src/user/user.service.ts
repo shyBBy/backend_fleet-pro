@@ -172,9 +172,14 @@ export class UserService {
 
             if (avatar) {
                 if (user.avatar) {
-                    fs.unlinkSync(
-                        path.join(storageDir(), 'user-avatars', user.avatar)
-                    );
+                    const filePath = path.join(storageDir(), 'user-avatars', user.avatar);
+                    if (fs.existsSync(filePath)) {
+                        try {
+                            fs.unlinkSync(filePath);
+                        } catch (e) {
+                            throw e
+                        }
+                    }
                 }
                 user.avatar = avatar.filename
             }

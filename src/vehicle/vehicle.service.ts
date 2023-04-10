@@ -165,9 +165,14 @@ export class VehicleService {
 
             if (avatar) {
                 if (vehicle.avatar) {
-                    fs.unlinkSync(
-                        path.join(storageDir(), 'vehicle-avatars', vehicle.avatar)
-                    );
+                    const filePath = path.join(storageDir(), 'vehicle-avatars', vehicle.avatar);
+                    if (fs.existsSync(filePath)) {
+                        try {
+                            fs.unlinkSync(filePath);
+                        } catch (e) {
+                            throw e
+                        }
+                    }
                 }
                 vehicle.avatar = avatar.filename
             }
