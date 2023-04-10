@@ -109,6 +109,12 @@ export interface TechnicalDataInterface {
     axleSpacing: string;
     wheelSpacing: string;
     maxAxleLoad: string;
+    vehicleWidth: string;
+    vehicleLenght: string;
+    vehicleHeight: string;
+    cargoBedWidth: string;
+    cargoBedLenght: string;
+    cargoBedHeight: string;
 }
 
 

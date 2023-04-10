@@ -63,6 +63,24 @@ export class TechnicalDataEntity extends BaseEntity {
     @Column()
     maxAxleLoad: string; // Maksymalny nacisk na oś
 
+    @Column({default: ''})
+    vehicleWidth: string;  //szerokosc
+
+    @Column({default: ''})
+    vehicleLenght: string; //dlugosc
+
+    @Column({default: ''})
+    vehicleHeight: string; //wysokosc
+
+    @Column({default: ''})
+    cargoBedWidth: string;
+
+    @Column({default: ''})
+    cargoBedLenght: string;
+
+    @Column({default: ''})
+    cargoBedHeight: string;
+
 
     @ManyToOne((type) => VehicleEntity, (entity) => entity.technicalData)
     vehicleProfile: VehicleEntity;
