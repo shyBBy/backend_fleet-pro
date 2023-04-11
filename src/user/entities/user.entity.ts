@@ -49,14 +49,10 @@ export class UserEntity extends BaseEntity {
     })
     role: USER_ROLE;
     
-    @Column({ 
-      type: 'varchar', 
-      array: true, 
+    @Column({
+      type: 'simple-array', // używamy typu 'simple-array' dla przechowywania tablicy w formacie tekstowym
       nullable: true,
-      default: null, 
-      
     })
-    permissions: string[];
 
     @Column({
         default: '',
