@@ -48,6 +48,14 @@ export class UserEntity extends BaseEntity {
         enumName: 'user_role',
     })
     role: USER_ROLE;
+    
+    @Column({ 
+      type: 'varchar', 
+      array: true, 
+      default: [] 
+      
+    })
+    permissions: string[];
 
     @Column({
         default: '',

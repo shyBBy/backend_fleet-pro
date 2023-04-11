@@ -3,6 +3,15 @@ export enum USER_ROLE {
     ADMIN = 'Administrator',
 }
 
+export enum PERMISSIONS {
+  ADD_VEH = 'Dodawanie pojazdów',
+  EDIT_VEH = 'Edytowanie pojazdów',
+  DELETE_VEH = 'Usuwanie pojazdów',
+  VIEW_ALL_VEH = 'Wyświetlanie wszystkich pojazdów',
+  VIEW_VEH_BY_LOCATION = 'Wyświetlanie pojazdów po lokalizacji',
+}
+
+
 export interface UserCreate {
     email: string;
     password: string;
