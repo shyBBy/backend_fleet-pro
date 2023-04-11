@@ -52,7 +52,8 @@ export class UserEntity extends BaseEntity {
     @Column({ 
       type: 'varchar', 
       array: true, 
-      default: [] 
+      nullable: true,
+      default: null, 
       
     })
     permissions: string[];
