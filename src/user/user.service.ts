@@ -119,7 +119,7 @@ export class UserService {
         userProfileUpdateDto: UserProfileDto,
         userId: string
     ) {
-        const {name, surname, email, placeName, jobPosition, role, isActive} = userProfileUpdateDto
+        const {name, surname, email, placeName, jobPosition, role, isActive, permissions} = userProfileUpdateDto
         const user = await UserEntity.findOneBy({id: userId})
 
         if (!user) {
@@ -149,6 +149,8 @@ export class UserService {
                 user.role = role
                 user.jobPosition = jobPosition
                 user.isActive = isActiveBoolean
+                user.permissions = permissions
+  
             }
 
             await user.save()

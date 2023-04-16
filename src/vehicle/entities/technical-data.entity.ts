@@ -13,10 +13,10 @@ export class TechnicalDataEntity extends BaseEntity {
 
 
     @Column()
-    engineCapacity: string; // Pojemność silnika
+    engineCapacity: number; // Pojemność silnika
 
     @Column()
-    enginePower: string; // Moc silnika
+    enginePower: number; // Moc silnika
 
     @Column()
     fuel: string; // Paliwo
@@ -25,43 +25,61 @@ export class TechnicalDataEntity extends BaseEntity {
     alternativeFuel: string; // Paliwo alternatywne
 
     @Column()
-    CO2Emission: string; // Emisja CO₂
+    CO2Emission: number; // Emisja CO₂
 
     @Column()
-    avgFuelConsumption: string; // Średnie zużycie paliwa na 100km
+    avgFuelConsumption: number; // Średnie zużycie paliwa na 100km
 
     @Column()
-    totalSeats: string; // Liczba miejsc ogółem
+    totalSeats: number; // Liczba miejsc ogółem
 
     @Column()
-    seatedSeats: string; // Liczba miejsc siedzących
+    seatedSeats: number; // Liczba miejsc siedzących
 
     @Column()
-    vehicleWeight: string; // Masa własna pojazdu
+    vehicleWeight: number; // Masa własna pojazdu
 
     @Column()
-    maxTrailerWeightWithBrakes: string; // Maks. masa całkowita ciągniętej przyczepy z hamulcem
+    maxTrailerWeightWithBrakes: number; // Maks. masa całkowita ciągniętej przyczepy z hamulcem
 
     @Column()
-    maxTrailerWeightWithoutBrakes: string; // Maks. masa całkowita ciągniętej przyczepy bez hamulca
+    maxTrailerWeightWithoutBrakes: number; // Maks. masa całkowita ciągniętej przyczepy bez hamulca
 
     @Column()
-    payload: string; // Dopuszczalna ładowność
+    payload: number; // Dopuszczalna ładowność
 
     @Column()
-    grossWeight: string; // Dopuszczalna masa całkowita
+    grossWeight: number; // Dopuszczalna masa całkowita
 
     @Column()
-    numberOfAxles: string; // Liczba osi
+    numberOfAxles: number; // Liczba osi
 
     @Column()
-    axleSpacing: string; // Rozstaw osi
+    axleSpacing: number; // Rozstaw osi
 
     @Column()
-    wheelSpacing: string; // Rozstaw kół (średni)
+    wheelSpacing: number; // Rozstaw kół (średni)
 
     @Column()
-    maxAxleLoad: string; // Maksymalny nacisk na oś
+    maxAxleLoad: number; // Maksymalny nacisk na oś
+
+    @Column({default: 0})
+    vehicleWidth: number;  //szerokosc
+
+    @Column({default: 0})
+    vehicleLenght: number; //dlugosc
+
+    @Column({default: 0})
+    vehicleHeight: number; //wysokosc
+
+    @Column({default: 0})
+    cargoBedWidth: number;
+
+    @Column({default: 0})
+    cargoBedLenght: number;
+
+    @Column({default: 0})
+    cargoBedHeight: number;
 
 
     @ManyToOne((type) => VehicleEntity, (entity) => entity.technicalData)

@@ -48,6 +48,12 @@ export class UserEntity extends BaseEntity {
         enumName: 'user_role',
     })
     role: USER_ROLE;
+    
+    @Column({
+      type: 'simple-array', // używamy typu 'simple-array' dla przechowywania tablicy w formacie tekstowym
+      nullable: true,
+    })
+    permissions: string[];
 
     @Column({
         default: '',

@@ -49,6 +49,9 @@ export class UserProfileDto {
 
   @IsOptional()
   placeName: string;
+  
+  @IsOptional()
+  permissions: string[];
 }
 
 export class UserLoginDto implements UserCreate {

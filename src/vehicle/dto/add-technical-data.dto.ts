@@ -1,74 +1,98 @@
-import {IsNotEmpty, IsNumber, IsOptional, IsString} from "class-validator";
+import {IsNumber, IsOptional, IsString} from "class-validator";
 
 
 export class AddTechnicalDataDto {
     @IsOptional()
     @IsNumber()
-    engineCapacity: string;
+    engineCapacity: number
 
     @IsOptional()
     @IsNumber()
-    enginePower: string; // Moc silnika
+    enginePower: number // Moc silnika
 
     @IsOptional()
     @IsString()
-    fuel: string; // Paliwo
+    fuel: string // Paliwo
 
     @IsOptional()
     @IsString()
-    alternativeFuel: string; // Paliwo alternatywne
-
-    @IsOptional()
-    @IsString()
-    CO2Emission: string; // Emisja CO₂
-
-    @IsOptional()
-    @IsString()
-    avgFuelConsumption: string; // Średnie zużycie paliwa na 100km
+    alternativeFuel: string // Paliwo alternatywne
 
     @IsOptional()
     @IsNumber()
-    totalSeats: string; // Liczba miejsc ogółem
+    CO2Emission: number // Emisja CO₂
 
     @IsOptional()
     @IsNumber()
-    seatedSeats: string; // Liczba miejsc siedzących
+    avgFuelConsumption: number // Średnie zużycie paliwa na 100km
 
     @IsOptional()
     @IsNumber()
-    vehicleWeight: string; // Masa własna pojazdu
+    totalSeats: number // Liczba miejsc ogółem
 
     @IsOptional()
     @IsNumber()
-    maxTrailerWeightWithBrakes: string; // Maks. masa całkowita ciągniętej przyczepy z hamulcem
+    seatedSeats: number // Liczba miejsc siedzących
 
     @IsOptional()
     @IsNumber()
-    maxTrailerWeightWithoutBrakes: string; // Maks. masa całkowita ciągniętej przyczepy bez hamulca
+    vehicleWeight: number // Masa własna pojazdu
 
     @IsOptional()
     @IsNumber()
-    payload: string; // Dopuszczalna ładowność
+    maxTrailerWeightWithBrakes: number // Maks. masa całkowita ciągniętej przyczepy z hamulcem
 
     @IsOptional()
     @IsNumber()
-    grossWeight: string; // Dopuszczalna masa całkowita
+    maxTrailerWeightWithoutBrakes: number // Maks. masa całkowita ciągniętej przyczepy bez hamulca
 
     @IsOptional()
     @IsNumber()
-    numberOfAxles: string; // Liczba osi
+    payload: number // Dopuszczalna ładowność
 
     @IsOptional()
     @IsNumber()
-    axleSpacing: string; // Rozstaw osi
+    grossWeight: number // Dopuszczalna masa całkowita
 
     @IsOptional()
     @IsNumber()
-    wheelSpacing: string; // Rozstaw kół (średni)
+    numberOfAxles: number // Liczba osi
 
     @IsOptional()
     @IsNumber()
-    maxAxleLoad: string; // Maksymalny nacisk na oś
+    axleSpacing: number // Rozstaw osi
+
+    @IsOptional()
+    @IsNumber()
+    wheelSpacing: number // Rozstaw kół (średni)
+
+    @IsOptional()
+    @IsNumber()
+    maxAxleLoad: number // Maksymalny nacisk na oś
+
+    @IsOptional()
+    @IsNumber()
+    vehicleWidth: number  //szerokosc
+
+    @IsOptional()
+    @IsNumber()
+    vehicleLenght: number //dlugosc
+
+    @IsOptional()
+    @IsNumber()
+    vehicleHeight: number //wysokosc
+
+    @IsOptional()
+    @IsNumber()
+    cargoBedWidth: number
+
+    @IsOptional()
+    @IsNumber()
+    cargoBedLenght: number
+
+    @IsOptional()
+    @IsNumber()
+    cargoBedHeight: number
 
 
 }

@@ -1,73 +1,43 @@
-<p align="center">
-  <a href="http://nestjs.com/" target="blank"><img src="https://nestjs.com/img/logo-small.svg" width="200" alt="Nest Logo" /></a>
-</p>
+![Tekst alternatywny](/screens/logoBlackv2.png)
 
-[circleci-image]: https://img.shields.io/circleci/build/github/nestjs/nest/master?token=abc123def456
-[circleci-url]: https://circleci.com/gh/nestjs/nest
 
-  <p align="center">A progressive <a href="http://nodejs.org" target="_blank">Node.js</a> framework for building efficient and scalable server-side applications.</p>
-    <p align="center">
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/v/@nestjs/core.svg" alt="NPM Version" /></a>
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/l/@nestjs/core.svg" alt="Package License" /></a>
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/dm/@nestjs/common.svg" alt="NPM Downloads" /></a>
-<a href="https://circleci.com/gh/nestjs/nest" target="_blank"><img src="https://img.shields.io/circleci/build/github/nestjs/nest/master" alt="CircleCI" /></a>
-<a href="https://coveralls.io/github/nestjs/nest?branch=master" target="_blank"><img src="https://coveralls.io/repos/github/nestjs/nest/badge.svg?branch=master#9" alt="Coverage" /></a>
-<a href="https://discord.gg/G7Qnnhy" target="_blank"><img src="https://img.shields.io/badge/discord-online-brightgreen.svg" alt="Discord"/></a>
-<a href="https://opencollective.com/nest#backer" target="_blank"><img src="https://opencollective.com/nest/backers/badge.svg" alt="Backers on Open Collective" /></a>
-<a href="https://opencollective.com/nest#sponsor" target="_blank"><img src="https://opencollective.com/nest/sponsors/badge.svg" alt="Sponsors on Open Collective" /></a>
-  <a href="https://paypal.me/kamilmysliwiec" target="_blank"><img src="https://img.shields.io/badge/Donate-PayPal-ff3f59.svg"/></a>
-    <a href="https://opencollective.com/nest#sponsor"  target="_blank"><img src="https://img.shields.io/badge/Support%20us-Open%20Collective-41B883.svg" alt="Support us"></a>
-  <a href="https://twitter.com/nestframework" target="_blank"><img src="https://img.shields.io/twitter/follow/nestframework.svg?style=social&label=Follow"></a>
-</p>
-  <!--[![Backers on Open Collective](https://opencollective.com/nest/backers/badge.svg)](https://opencollective.com/nest#backer)
-  [![Sponsors on Open Collective](https://opencollective.com/nest/sponsors/badge.svg)](https://opencollective.com/nest#sponsor)-->
+## OPIS aplikacji
 
-## Description
+Aplikacja do zarządzania flotą pojazdów to narzędzie, które pozwala na łatwe i skuteczne zarządzanie zasobami transportowymi w firmie. Dostęp do aplikacji jest możliwy tylko po poprawnym zalogowaniu, a dostępne role to administrator i użytkownik z uwzględnieniem nazwy stanowiska w firmie.  
+Aplikacja umożliwia wyświetlanie i sortowanie pojazdów według różnych kryteriów, takich jak marka, model, numer rejestracyjny lub przypisany oddział firmy. Po wybraniu konkretnego pojazdu możliwe jest wyświetlenie szczegółowych informacji o nim, takich jak przebieg, ostatni przegląd czy ubezpieczenie.
 
-[Nest](https://github.com/nestjs/nest) framework TypeScript starter repository.
+Administrator ma możliwość przypisywania pojazdów do konkretnych oddziałów firmy oraz ustawiania przypomnień o konieczności wykonania przeglądu czy innych obowiązków związanych z utrzymaniem pojazdu w dobrym stanie technicznym.
 
-## Installation
+Aplikacja została stworzona w technologii React Typescript, co pozwala na jej szybkie i sprawne działanie oraz łatwe rozszerzanie o nowe funkcjonalności.
 
-```bash
-$ npm install
-```
 
-## Running the app
+[link do Front-End](https://github.com/shyBBy/frontend_fleet-pro).
 
-```bash
-# development
-$ npm run start
+# Wykorzystane technologie
 
-# watch mode
-$ npm run start:dev
+Aplikacja została napisana z wykorzystaniem następujących technologii:
 
-# production mode
-$ npm run start:prod
-```
+![React](https://img.shields.io/badge/-React-blue?logo=react&logoColor=white&style=flat) ![TypeScript](https://img.shields.io/badge/-TypeScript-blue?logo=typescript&logoColor=white&style=flat) ![Material UI](https://img.shields.io/badge/-Material%20UI-blueviolet?logo=material-ui&logoColor=white&style=flat) ![React Hook Form](https://img.shields.io/badge/-React%20Hook%20Form-blue?logo=react&logoColor=white&style=flat) ![React Toastify](https://img.shields.io/badge/-React%20Toastify-ff69b4?logo=react&logoColor=white&style=flat)
 
-## Test
 
-```bash
-# unit tests
-$ npm run test
+# Funkcjonalności, które już posiada
 
-# e2e tests
-$ npm run test:e2e
+- Rejestracja i logowanie użytkownika
+- Weryfikacja adresu e-mail i aktywacja konta
+- Dodawanie, usuwanie, wyświetlanie pojazdów
+- Przypisywanie pojazdów do konkretnego oddziału firmy
+- Historia serwisowa pojazdu
+- Lista ostatnich zmian w aplikacji widoczna na stronie głównej Dashboardu
+- Zarządzanie listą użytkowników z panelu administracyjnego
+- System plików - możliwość wgrania avatara dla pojazdu i użytkownika
 
-# test coverage
-$ npm run test:cov
-```
 
-## Support
+# Funkcjonalności, które mają zostać wprowadzone
 
-Nest is an MIT-licensed open source project. It can grow thanks to the sponsors and support by the amazing backers. If you'd like to join them, please [read more here](https://docs.nestjs.com/support).
+- Możliwość tworzenia oraz zarządzania odpowiednimi oddziałami firmy.
+- Rozbudowany system uprawnień użytkownika.
 
-## Stay in touch
+# Demo
 
-- Author - [Kamil Myśliwiec](https://kamilmysliwiec.com)
-- Website - [https://nestjs.com](https://nestjs.com/)
-- Twitter - [@nestframework](https://twitter.com/nestframework)
+Możesz zobaczyć działającą wersję aplikacji pod adresem: [link do DEMO](https://project.dev-olczak.pl).
 
-## License
-
-Nest is [MIT licensed](LICENSE).
