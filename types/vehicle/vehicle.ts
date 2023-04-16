@@ -92,29 +92,29 @@ export interface VehicleProfileInterface extends VehicleProfileCreate {
 
 export interface TechnicalDataInterface {
     id: number;
-    engineCapacity: string;
-    enginePower: string;
+    engineCapacity: number;
+    enginePower: number;
     fuel: string;
     alternativeFuel: string;
-    CO2Emission: string;
-    avgFuelConsumption: string;
-    totalSeats: string;
-    seatedSeats: string;
-    vehicleWeight: string;
-    maxTrailerWeightWithBrakes: string;
-    maxTrailerWeightWithoutBrakes: string;
-    payload: string;
-    grossWeight: string;
-    numberOfAxles: string;
-    axleSpacing: string;
-    wheelSpacing: string;
-    maxAxleLoad: string;
-    vehicleWidth: string;
-    vehicleLenght: string;
-    vehicleHeight: string;
-    cargoBedWidth: string;
-    cargoBedLenght: string;
-    cargoBedHeight: string;
+    CO2Emission: number;
+    avgFuelConsumption: number;
+    totalSeats: number;
+    seatedSeats: number;
+    vehicleWeight: number;
+    maxTrailerWeightWithBrakes: number;
+    maxTrailerWeightWithoutBrakes: number;
+    payload: number;
+    grossWeight: number;
+    numberOfAxles: number;
+    axleSpacing: number;
+    wheelSpacing: number;
+    maxAxleLoad: number;
+    vehicleWidth: number;
+    vehicleLenght: number;
+    vehicleHeight: number;
+    cargoBedWidth: number;
+    cargoBedLenght: number;
+    cargoBedHeight: number;
 }
 
 

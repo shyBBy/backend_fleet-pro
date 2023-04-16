@@ -10,7 +10,6 @@ import {TechnicalDataEntity} from "./entities/technical-data.entity";
 import {storageDir} from "../utils/storage";
 import * as fs from "fs";
 import * as path from "path";
-import {UserEntity} from "../user/entities/user.entity";
 
 
 @Injectable()
@@ -246,6 +245,7 @@ export class VehicleService {
 
 
     async addTechnicalInfo(addTechnicalDataDto: AddTechnicalDataDto, vehId: string) {
+        console.log(addTechnicalDataDto)
 
         const {
             engineCapacity,
@@ -265,6 +265,12 @@ export class VehicleService {
             axleSpacing,
             wheelSpacing,
             maxAxleLoad,
+            vehicleWidth,
+            vehicleHeight,
+            vehicleLenght,
+            cargoBedHeight,
+            cargoBedWidth,
+            cargoBedLenght,
         } = addTechnicalDataDto
 
         const vehicle = await VehicleEntity.findOneBy({id: vehId});
@@ -279,26 +285,64 @@ export class VehicleService {
             );
         }
 
-        const vehicleTechInformation = new TechnicalDataEntity()
-        vehicleTechInformation.engineCapacity = engineCapacity;
-        vehicleTechInformation.enginePower = enginePower;
-        vehicleTechInformation.fuel = fuel;
-        vehicleTechInformation.alternativeFuel = alternativeFuel;
-        vehicleTechInformation.CO2Emission = CO2Emission;
-        vehicleTechInformation.avgFuelConsumption = avgFuelConsumption;
-        vehicleTechInformation.totalSeats = totalSeats;
-        vehicleTechInformation.seatedSeats = seatedSeats;
-        vehicleTechInformation.vehicleWeight = vehicleWeight;
-        vehicleTechInformation.maxTrailerWeightWithBrakes = maxTrailerWeightWithBrakes;
-        vehicleTechInformation.maxTrailerWeightWithoutBrakes = maxTrailerWeightWithoutBrakes;
-        vehicleTechInformation.payload = payload;
-        vehicleTechInformation.grossWeight = grossWeight;
-        vehicleTechInformation.numberOfAxles = numberOfAxles;
-        vehicleTechInformation.axleSpacing = axleSpacing;
-        vehicleTechInformation.wheelSpacing = wheelSpacing;
-        vehicleTechInformation.maxAxleLoad = maxAxleLoad;
-        vehicleTechInformation.vehicleProfile = vehicle;
-        await vehicleTechInformation.save();
+        let technicalData = await TechnicalDataEntity.findOneBy({vehicleProfile: {id: vehicle.id}});
+
+        if (!technicalData) {
+            const vehicleTechInformation = new TechnicalDataEntity()
+            vehicleTechInformation.engineCapacity = engineCapacity;
+            vehicleTechInformation.enginePower = enginePower;
+            vehicleTechInformation.fuel = fuel;
+            vehicleTechInformation.alternativeFuel = alternativeFuel;
+            vehicleTechInformation.CO2Emission = CO2Emission;
+            vehicleTechInformation.avgFuelConsumption = avgFuelConsumption;
+            vehicleTechInformation.totalSeats = totalSeats;
+            vehicleTechInformation.seatedSeats = seatedSeats;
+            vehicleTechInformation.vehicleWeight = vehicleWeight;
+            vehicleTechInformation.maxTrailerWeightWithBrakes = maxTrailerWeightWithBrakes;
+            vehicleTechInformation.maxTrailerWeightWithoutBrakes = maxTrailerWeightWithoutBrakes;
+            vehicleTechInformation.payload = payload;
+            vehicleTechInformation.grossWeight = grossWeight;
+            vehicleTechInformation.numberOfAxles = numberOfAxles;
+            vehicleTechInformation.axleSpacing = axleSpacing;
+            vehicleTechInformation.wheelSpacing = wheelSpacing;
+            vehicleTechInformation.maxAxleLoad = maxAxleLoad;
+            vehicleTechInformation.vehicleProfile = vehicle;
+            vehicleTechInformation.vehicleWidth = vehicleWidth;
+            vehicleTechInformation.vehicleLenght = vehicleLenght;
+            vehicleTechInformation.vehicleHeight = vehicleHeight;
+            vehicleTechInformation.cargoBedHeight = cargoBedHeight;
+            vehicleTechInformation.cargoBedWidth = cargoBedWidth;
+            vehicleTechInformation.cargoBedLenght = cargoBedLenght;
+            await vehicleTechInformation.save();
+        }
+
+        technicalData.engineCapacity = engineCapacity;
+        technicalData.enginePower = enginePower;
+        technicalData.fuel = fuel;
+        technicalData.alternativeFuel = alternativeFuel;
+        technicalData.CO2Emission = CO2Emission;
+        technicalData.avgFuelConsumption = avgFuelConsumption;
+        technicalData.totalSeats = totalSeats;
+        technicalData.seatedSeats = seatedSeats;
+        technicalData.vehicleWeight = vehicleWeight;
+        technicalData.maxTrailerWeightWithBrakes = maxTrailerWeightWithBrakes;
+        technicalData.maxTrailerWeightWithoutBrakes = maxTrailerWeightWithoutBrakes;
+        technicalData.payload = payload;
+        technicalData.grossWeight = grossWeight;
+        technicalData.numberOfAxles = numberOfAxles;
+        technicalData.axleSpacing = axleSpacing;
+        technicalData.wheelSpacing = wheelSpacing;
+        technicalData.maxAxleLoad = maxAxleLoad;
+        technicalData.vehicleProfile = vehicle;
+        technicalData.vehicleWidth = vehicleWidth;
+        technicalData.vehicleLenght = vehicleLenght;
+        technicalData.vehicleHeight = vehicleHeight;
+        technicalData.cargoBedHeight = cargoBedHeight;
+        technicalData.cargoBedWidth = cargoBedWidth;
+        technicalData.cargoBedLenght = cargoBedLenght;
+        await technicalData.save();
+
+
         return createResponse(true, 'Pomyślnie uzupełniono informacje.', 200);
 
     }
